@@ -1,0 +1,1882 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skypro Колледж · 20 механик по учебным задачам</title>
+<style>
+:root{
+  --paper:#F3F6FD;--surface:#fff;--ink:#0E1B3D;--mut:#55648A;--line:#D6DFF3;--sky:#E4ECFF;
+  --ochre:#F2B33D;--ochre-t:#FFF1CF;--ochre-d:#8A5606;--brown:#7B4A2D;--accent:#2F6BFF;
+  --ok:#17775F;--okb:#DAF2EA;--bad:#B9305A;--badb:#FBE2EA;
+  --btn:#2F6BFF;--btntx:#fff;--focus:#2F6BFF;
+  --hero-base:#2F6BFF;--hero-patch:#1F55DC;--hero-ink:#fff;
+  --c1:#F2B33D;--c2:#2F6BFF;--c3:#1F8A70;--c4:#C93C63;
+  --shadow:0 1px 0 rgba(14,27,61,.05),0 18px 40px -18px rgba(14,27,61,.35);
+  --r:22px;
+  --display:"Stratos","Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --paper:#0B1226;--surface:#131C38;--ink:#EAF0FF;--mut:#9FB0D6;--line:#26335C;--sky:#1B2850;
+  --ochre-t:#3A3114;--ochre-d:#F2B33D;--accent:#7BA2FF;--ok:#62D6B3;--okb:#123A31;--bad:#FF8AA9;--badb:#4A1C2B;
+  --btn:#5B8CFF;--btntx:#0B1226;--focus:#9DBAFF;--hero-base:#14275C;--hero-patch:#0C1B49;--hero-ink:#EAF0FF;
+  --c2:#7BA2FF;--c3:#4FCBA6;--c4:#FF7C9C;--shadow:0 18px 40px -18px rgba(0,0,0,.7)}}
+:root[data-theme=dark]{
+  --paper:#0B1226;--surface:#131C38;--ink:#EAF0FF;--mut:#9FB0D6;--line:#26335C;--sky:#1B2850;
+  --ochre-t:#3A3114;--ochre-d:#F2B33D;--accent:#7BA2FF;--ok:#62D6B3;--okb:#123A31;--bad:#FF8AA9;--badb:#4A1C2B;
+  --btn:#5B8CFF;--btntx:#0B1226;--focus:#9DBAFF;--hero-base:#14275C;--hero-patch:#0C1B49;--hero-ink:#EAF0FF;
+  --c2:#7BA2FF;--c3:#4FCBA6;--c4:#FF7C9C;--shadow:0 18px 40px -18px rgba(0,0,0,.7)}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--body);-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+a{color:inherit}
+mark{background:rgba(242,179,61,.45);color:inherit;border-radius:4px;padding:0 3px}
+b{font-weight:600}
+
+/* ---------- оболочка и линейка роста ---------- */
+.shell{display:grid;grid-template-columns:84px minmax(0,1fr);max-width:1060px;margin:0 auto;padding:0 16px 0 0}
+.main{min-width:0;padding-bottom:80px}
+.ruler{position:sticky;top:0;height:100vh;height:100dvh;padding:28px 0 24px}
+.ruler .track{position:relative;height:100%;margin-left:30px;width:28px}
+.ruler .tape{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px;background:
+  repeating-linear-gradient(to bottom,transparent 0 11px,var(--ink) 11px 12px) ,var(--line);opacity:.9}
+.ruler .tick{position:absolute;left:-22px;transform:translateY(-50%);width:44px;text-align:right;
+  font:500 11px/1 var(--display);color:var(--mut);text-decoration:none;padding:5px 7px 5px 0;border-radius:8px}
+.ruler .tick::after{content:"";position:absolute;right:-14px;top:50%;width:12px;height:3px;background:var(--mut);border-radius:2px;transform:translateY(-50%)}
+.ruler .tick:hover{color:var(--ink)}
+.ruler .tick.on{color:var(--ink);font-weight:700}
+.ruler .tick.on::after{background:var(--accent);width:18px}
+.ruler .head{position:absolute;left:8px;top:0;width:42px;height:42px;transform:translate(0,-50%);pointer-events:none;transition:top .12s linear}
+.ruler .head svg{width:100%;height:100%;filter:drop-shadow(0 2px 3px rgba(14,27,61,.35))}
+
+/* ---------- hero ---------- */
+.hero{position:relative;margin:20px 0 40px;border-radius:30px;overflow:hidden;background:var(--hero-base);color:var(--hero-ink);isolation:isolate}
+.hero svg.skin{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero .in{padding:46px 40px 36px;max-width:720px}
+.hero h1{font:800 clamp(28px,5.2vw,48px)/1.08 var(--display);margin:0 0 16px;letter-spacing:-.03em}
+.hero p{margin:0 0 12px;max-width:56ch;font-size:17px}
+.hero .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.hero .links a,.hero .links button{background:var(--hero-ink);color:var(--hero-base);border:0;text-decoration:none;
+  padding:10px 18px;border-radius:99px;font-weight:600;font-size:15px;cursor:pointer}
+.hero .links a.alt,.hero .links button.alt{background:transparent;color:var(--hero-ink);box-shadow:inset 0 0 0 2px var(--hero-ink)}
+.howto{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 0;padding:0;list-style:none;font-size:14px}
+.howto li{background:rgba(255,255,255,.18);border-radius:99px;padding:4px 12px;color:#fff}
+:root[data-theme=dark] .howto li,:root:not([data-theme=light]) .howto li{background:rgba(255,255,255,.1);color:#DCE6FF}
+@media (prefers-color-scheme:light){:root:not([data-theme=dark]) .howto li{background:rgba(255,255,255,.18);color:#fff}}
+
+/* ---------- механика ---------- */
+.mech{margin:0 0 72px}
+.mh{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:start;margin-bottom:16px}
+.mh .num{font:700 clamp(34px,6vw,56px)/1 var(--display);color:var(--accent);letter-spacing:-.04em}
+.mh h2{font:700 clamp(19px,2.8vw,26px)/1.2 var(--display);margin:6px 0 6px;letter-spacing:-.01em}
+.mh .desc{margin:0;color:var(--mut);max-width:62ch}
+.mh .ids{margin:8px 0 0;font-size:13px;color:var(--mut)}
+.mh .ids span{background:var(--sky);padding:2px 9px;border-radius:99px;margin-right:4px;color:var(--ink);font-weight:500}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 26px 24px;box-shadow:var(--shadow)}
+.stage > :last-child{margin-bottom:0}
+.lead{font-weight:500;margin:0 0 14px}
+.mut{color:var(--mut)}
+.hint{color:var(--mut);font-size:14px;margin:12px 0 0}
+.note{min-height:1.4em;margin:10px 0 0;color:var(--bad);font-size:14px;font-weight:500}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+
+details.code{margin-top:12px}
+details.code summary{cursor:pointer;color:var(--mut);font-size:14px;padding:6px 2px;list-style:none;display:inline-flex;gap:6px;align-items:center}
+details.code summary::-webkit-details-marker{display:none}
+details.code summary::before{content:"</>";font:600 12px var(--display);background:var(--sky);padding:3px 7px;border-radius:7px;color:var(--ink)}
+details.code[open] summary{color:var(--ink)}
+details.code pre{margin:8px 0 0;max-height:420px;overflow:auto;background:#1A1A38;color:#E7E8FF;border-radius:14px;padding:16px;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:2}
+details.code .copy{margin-top:8px}
+
+/* ---------- кнопки и теги ---------- */
+.btn{border:0;background:var(--btn);color:var(--btntx);padding:12px 22px;border-radius:99px;font-weight:600;cursor:pointer;
+  transition:transform .12s,box-shadow .12s;box-shadow:0 6px 16px -8px rgba(14,27,61,.6)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.sm{padding:7px 14px;font-size:14px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.ib{width:38px;height:38px;border-radius:12px;border:0;background:var(--sky);cursor:pointer;font-size:18px;line-height:1}
+.ib:hover:not(:disabled){background:var(--ochre-t)}
+.ib:disabled{opacity:.3;cursor:default}
+.tag{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:3px 11px;font-size:13px;font-weight:600;background:var(--sky);color:var(--ink);white-space:nowrap}
+.tag.ok{background:var(--okb);color:var(--ok)}
+.tag.bad{background:var(--badb);color:var(--bad)}
+.tag.ok::before{content:"✓"}.tag.bad::before{content:"✕"}
+.pill{border:0;background:var(--sky);color:var(--ink);padding:6px 14px;border-radius:99px;cursor:pointer;font-size:14px;font-weight:500}
+.pill[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+
+/* ---------- шаги ---------- */
+.steps{display:flex;list-style:none;margin:0 0 24px;padding:0}
+.steps li{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;font-size:13px;color:var(--mut)}
+.steps li::before{content:"";position:absolute;top:13px;right:50%;width:100%;height:3px;background:var(--line);z-index:0}
+.steps li:first-child::before{display:none}
+.steps li.done::before,.steps li.on::before{background:var(--ink)}
+.steps i{position:relative;z-index:1;font-style:normal;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  background:var(--surface);border:3px solid var(--line);font:600 12px var(--display);color:var(--mut)}
+.steps li.on i{border-color:var(--ink);background:var(--ochre);color:#0E1B3D}
+.steps li.done i{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.steps li.on{color:var(--ink);font-weight:600}
+
+/* ---------- цитата из текста ---------- */
+.quote{margin:0 0 12px;padding:14px 18px;background:var(--ochre-t);border-left:5px solid var(--ochre);border-radius:6px 16px 16px 6px;display:grid;gap:4px}
+.quote b{font:600 12px var(--display);color:var(--ochre-d);letter-spacing:.01em}
+.quote span{font-size:16px}
+
+/* ---------- карточка вопроса ---------- */
+.qcard{padding:18px 0;border-top:1px solid var(--line)}
+.qcard:first-of-type{border-top:0;padding-top:0}
+.qt{font-weight:600;margin:0 0 10px}
+.readout{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.readout output{font:700 40px/1 var(--display);letter-spacing:-.03em}
+.readout span{color:var(--mut);font-weight:500}
+.scale{display:flex;justify-content:space-between;color:var(--mut);font-size:12px;margin-top:-2px}
+.ghostline{margin:8px 0 0;font-size:14px;color:var(--mut)}
+
+/* ---------- ползунок ---------- */
+.rng{-webkit-appearance:none;appearance:none;width:100%;height:36px;background:transparent;margin:0;cursor:pointer;--c:var(--ink);--p:50%}
+.rng::-webkit-slider-runnable-track{height:10px;border-radius:99px;background:linear-gradient(90deg,var(--c) var(--p),var(--sky) var(--p))}
+.rng::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-10px;border-radius:50%;background:var(--surface);border:5px solid var(--c);box-shadow:0 3px 8px rgba(14,27,61,.35)}
+.rng::-moz-range-track{height:10px;border-radius:99px;background:var(--sky)}
+.rng::-moz-range-progress{height:10px;border-radius:99px;background:var(--c)}
+.rng::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--surface);border:5px solid var(--c);box-shadow:0 3px 8px rgba(14,27,61,.35)}
+
+/* ---------- рельс «до / после / факт» ---------- */
+.rail{position:relative;height:46px;margin:14px 8px 10px}
+.rail::before{content:"";position:absolute;left:0;right:0;top:21px;height:4px;border-radius:4px;background:var(--sky)}
+.rail .band{position:absolute;top:13px;height:20px;border-radius:10px;background:var(--okb);outline:2px dashed var(--ok);outline-offset:-2px;opacity:.9}
+.pin{position:absolute;top:23px;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;transition:left .9s cubic-bezier(.3,.9,.3,1)}
+.pin.b{background:var(--surface);border:4px solid var(--c2)}
+.pin.a{background:var(--c2);border:4px solid var(--c2);box-shadow:0 3px 8px rgba(14,27,61,.35)}
+.pin.f{width:26px;height:26px;border-radius:5px;transform:rotate(45deg);background:var(--ochre);border:3px solid var(--ink);margin:-13px 0 0 -13px}
+.legend{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:14px;margin:6px 0 8px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:50%}
+.legend .lb{background:var(--surface);border:3px solid var(--c2)}
+.legend .la{background:var(--c2)}
+.legend .lf{background:var(--ochre);border:2px solid var(--ink);border-radius:3px;transform:rotate(45deg) scale(.85)}
+.sumbox{margin-top:18px;padding:16px 18px;border-radius:16px;background:var(--sky);display:flex;gap:14px 28px;flex-wrap:wrap;align-items:baseline}
+.sumbox .n{font:700 34px/1 var(--display);letter-spacing:-.03em}
+.sumbox small{display:block;color:var(--mut);font-size:13px;margin-top:3px}
+
+/* ---------- таблицы ---------- */
+.tw{overflow-x:auto;margin:0 -6px;padding:0 6px}
+table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:15px}
+.t th{font-weight:600;text-align:left;padding:10px 12px;background:var(--sky);color:var(--ink);white-space:nowrap}
+.t th:first-child{border-radius:12px 0 0 12px}.t th:last-child{border-radius:0 12px 12px 0}
+.t td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.t tr:last-child td{border-bottom:0}
+.t td.c,.t th.c{text-align:center}
+.t small{display:block;font-weight:400;color:var(--mut);font-size:12px}
+.t td.ok{background:var(--okb)}.t td.bad{background:var(--badb)}
+.t td.num{font-variant-numeric:tabular-nums}
+.numin{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:4px 10px}
+.numin:focus-within{border-color:var(--ink)}
+.numin input{width:76px;border:0;background:transparent;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;outline:0;text-align:right}
+.numin span{color:var(--mut);font-size:13px}
+.sel{appearance:none;-webkit-appearance:none;border:2px solid var(--line);border-radius:12px;padding:8px 36px 8px 12px;background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a88b8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;cursor:pointer;min-width:150px}
+.sel:focus-visible{border-color:var(--ink)}
+.t td.ok .sel{border-color:var(--ok)}.t td.bad .sel{border-color:var(--bad)}
+.mark{display:inline-block;margin-left:8px;font-weight:700}
+.t td.ok .mark{color:var(--ok)}.t td.bad .mark{color:var(--bad)}
+.cat{position:relative;display:grid;place-items:center}
+.cat input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.cat i{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);display:grid;place-items:center;font:700 14px/1 var(--display);font-style:normal;color:transparent;transition:background .15s,border-color .15s,transform .15s}
+.cat input:hover + i{border-color:var(--mut)}
+.cat input:checked + i{background:var(--ink);border-color:var(--ink);transform:scale(1.08)}
+.cat input:focus-visible + i{outline:3px solid var(--focus);outline-offset:2px}
+td.ok .cat i{background:var(--ok);border-color:var(--ok);color:#fff}
+td.ok .cat i::before{content:"✓"}
+td.bad .cat input:checked + i{background:var(--bad);border-color:var(--bad);color:#fff}
+td.bad .cat input:checked + i::before{content:"✕"}
+td.ok .cat input:not(:checked) + i{background:transparent;color:var(--ok)}
+.sortb{border:0;background:transparent;font-weight:600;cursor:pointer;display:inline-flex;gap:6px;align-items:center;padding:0}
+.sortb i{font-style:normal;font-size:11px;color:var(--mut)}
+.barcell{min-width:200px}
+.barcell b{position:relative;z-index:1;font-variant-numeric:tabular-nums}
+.barcell .wrap{position:relative;display:flex;align-items:center;height:30px}
+.dbar{position:absolute;left:0;top:3px;bottom:3px;width:0;border-radius:8px;background:var(--ochre);opacity:.6;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.barcell b{padding-left:8px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filters .lbl{color:var(--mut);font-size:14px;margin-right:2px}
+.qs{margin-top:22px;display:grid;gap:18px}
+.qs .qa{padding:14px 16px;border-radius:16px;background:var(--paper);border:2px solid transparent}
+.qs .qa.ok{border-color:var(--ok);background:var(--okb)}.qs .qa.bad{border-color:var(--bad);background:var(--badb)}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.opt span{display:block;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--surface);font-weight:500}
+.opt input:checked + span{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.opt input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+
+/* ---------- ранжирование ---------- */
+.rank{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.rank li{display:flex;align-items:center;gap:14px;background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:12px 14px;will-change:transform}
+.rank .pos{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:700 14px var(--display)}
+.rank .lbl{flex:1;font-weight:600}
+.rank .mv{display:flex;gap:6px}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cols2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:620px){.cols3{grid-template-columns:1fr}}
+.colx{background:var(--paper);border-radius:16px;padding:14px 16px}
+.colx h4{margin:0 0 8px;font:600 13px var(--display)}
+.colx.ref{background:var(--ochre-t);outline:2px solid var(--ochre)}
+.colx ol{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.colx li{display:flex;gap:8px;align-items:center;font-size:14px;line-height:1.3}
+.colx li .pos{flex:none;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:700 11px var(--display)}
+.colx li.hit .pos{background:var(--ok)}
+.colx li.miss .pos{background:var(--bad)}
+.wbar{height:10px;border-radius:6px;background:var(--ochre);min-width:3px;margin-top:5px}
+
+/* ---------- миф / факт ---------- */
+.dots{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.dots i{width:14px;height:14px;border-radius:50%;background:var(--sky);display:block}
+.dots i.cur{outline:3px solid var(--ink);outline-offset:2px}
+.dots i.ok{background:var(--ok)}.dots i.bad{background:var(--bad)}
+.dots .score{margin-left:auto;font:700 15px var(--display)}
+.claim{font:600 clamp(20px,3.4vw,27px)/1.3 var(--display);letter-spacing:-.015em;margin:0 0 22px;min-height:3.6em;display:flex;align-items:center}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.big{border:0;border-radius:18px;padding:18px 12px;font:700 18px var(--display);cursor:pointer;display:grid;gap:4px;place-items:center;transition:transform .12s}
+.big small{font:500 13px var(--body);opacity:.8}
+.big:hover{transform:translateY(-2px)}
+.big.t{background:var(--okb);color:var(--ok)}.big.f{background:var(--badb);color:var(--bad)}
+.bets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+@media(max-width:560px){.bets{grid-template-columns:1fr}}
+.bet{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:12px;text-align:left;cursor:pointer;display:grid;gap:6px;transition:border-color .15s,transform .12s}
+.bet:hover{border-color:var(--ink);transform:translateY(-2px)}
+.bet b{font-size:15px}
+.bet small{color:var(--mut);font-size:13px}
+.soft{margin:12px 0 0;padding:10px 14px;border-left:4px solid var(--ochre);background:var(--ochre-t);border-radius:0 12px 12px 0;font-size:15px}
+.bet .pay{display:flex;gap:8px;font-size:13px;font-weight:600}
+.bet .pay em{font-style:normal;padding:2px 8px;border-radius:99px}
+.bet .pay .w{background:var(--okb);color:var(--ok)}.bet .pay .l{background:var(--badb);color:var(--bad)}
+.verdict{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:16px 18px;border-radius:18px}
+.verdict.ok{background:var(--okb);color:var(--ok)}.verdict.bad{background:var(--badb);color:var(--bad)}
+.verdict .ic{width:46px;height:46px;border-radius:50%;background:currentColor;display:grid;place-items:center}
+.verdict .ic span{color:var(--surface);font:700 22px var(--display)}
+.verdict p{margin:0;color:var(--ink)}
+.verdict .pts{font:700 28px var(--display)}
+.calib{display:grid;gap:10px;margin:18px 0}
+.calib .r{display:grid;grid-template-columns:130px 1fr 80px;gap:10px;align-items:center;font-size:14px}
+.calib+.hint{margin:0 0 14px}
+.calib .trk{height:16px;border-radius:9px;background:var(--sky);overflow:hidden}
+.calib .fill{height:100%;width:0;border-radius:9px;background:var(--c3);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+@media(max-width:560px){.calib .r{grid-template-columns:100px 1fr 60px}}
+
+/* ---------- жираф-иллюстрация ---------- */
+.fig{border-radius:18px;overflow:hidden;background:var(--sky);margin:0 -4px}
+.fig svg{display:block;width:100%;height:auto}
+.hs{cursor:pointer}
+.hs .dot{fill:#0E1B3D;stroke:#fff;stroke-width:3}
+.hs text{fill:#fff;font:700 15px var(--display);text-anchor:middle;pointer-events:none}
+.hs .ring{fill:none;stroke:#0E1B3D;stroke-width:3;opacity:.5;transform-box:fill-box;transform-origin:center}
+.hs:hover .dot,.hs:focus-visible .dot{fill:#2F6BFF}
+.hs.done .dot{fill:#17775F}
+.hs.done .ring{display:none}
+.hs.shake{animation:shake .4s}
+.hs.right .dot{fill:#17775F}.hs.wrong .dot{fill:#B9305A}
+.hs:focus-visible{outline:none}
+.hs:focus-visible .ring{stroke:#2F6BFF;opacity:1;stroke-width:5}
+.info{margin-top:14px;padding:16px 18px;border-radius:16px;background:var(--ochre-t);border-left:5px solid var(--ochre);min-height:92px}
+.info h4{margin:0 0 4px;font:700 15px var(--display)}
+.info p{margin:0}
+.modes{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.meter{display:flex;gap:6px;margin-top:10px}
+.meter i{width:26px;height:8px;border-radius:5px;background:var(--line)}
+.meter i.on{background:var(--ok)}
+
+/* ---------- пропуски и текст ---------- */
+.para{font-size:19px;line-height:2.3;margin:0 0 14px}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-width:92px;min-height:38px;padding:0 12px;margin:0 3px;border:0;border-bottom:3px dashed var(--mut);
+  background:var(--sky);border-radius:10px 10px 4px 4px;cursor:pointer;font-weight:600;vertical-align:middle;color:var(--ink)}
+.slot.fill{border-bottom-style:solid;border-bottom-color:var(--ink);background:var(--ochre-t);animation:pop .25s}
+.slot.ok{border-bottom-color:var(--ok);background:var(--okb);color:var(--ok)}
+.slot.bad{border-bottom-color:var(--bad);background:var(--badb);color:var(--bad)}
+.slot.ok::after{content:" ✓"}.slot.bad::after{content:" ✕"}
+.bank{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 4px;padding:14px;border-radius:16px;background:var(--paper)}
+.chip{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 16px;font-weight:600;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:transform .1s}
+.chip:hover{transform:translateY(-2px)}
+.chip.sel{background:var(--ink);color:var(--paper);border-color:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.35);transform:translateY(-3px)}
+.chip.used{opacity:.25;pointer-events:none;box-shadow:none}
+.w{border:0;background:transparent;font:inherit;font-size:19px;line-height:2.2;padding:0 2px;margin:0;cursor:pointer;color:inherit;border-radius:6px}
+.w:hover{background:var(--sky)}
+.w.on{background:linear-gradient(transparent 52%,rgba(242,179,61,.75) 52%);animation:swipe .25s}
+.w.ok{background:var(--okb);color:var(--ok);font-weight:600}
+.w.bad{background:var(--badb);color:var(--bad);text-decoration:line-through}
+.w.miss{outline:2px dashed var(--bad);outline-offset:1px}
+.tally{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+/* ---------- сценарий ---------- */
+.scene{border-radius:18px;overflow:hidden;margin-bottom:16px;background:linear-gradient(#F7D7A0,#FBEBC9)}
+:root[data-theme=dark] .scene,:root:not([data-theme=light]) .scene{background:linear-gradient(#3B2E5A,#6A4A5A)}
+@media (prefers-color-scheme:light){:root:not([data-theme=dark]) .scene{background:linear-gradient(#F7D7A0,#FBEBC9)}}
+.scene svg{display:block;width:100%;height:auto}
+.story{font:600 clamp(18px,2.6vw,22px)/1.4 var(--display);letter-spacing:-.01em;margin:0 0 16px}
+.choices{display:grid;gap:10px}
+.choice{text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 18px;font-weight:600;cursor:pointer;transition:border-color .15s,transform .12s,background .15s}
+.choice:hover{border-color:var(--ink);transform:translateX(4px);background:var(--ochre-t)}
+.end{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;padding:18px;border-radius:18px}
+.end.good{background:var(--okb)}.end.bad{background:var(--badb)}
+.end .seal{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font:700 26px var(--display);color:#fff}
+.end.good .seal{background:var(--ok)}.end.bad .seal{background:var(--bad)}
+.end h3{margin:0 0 6px;font:700 17px var(--display)}
+.end p{margin:0 0 6px}
+.map{margin:18px 0 0;padding:14px 16px;background:var(--paper);border-radius:16px;font-size:14px}
+.map h4{margin:0 0 8px;font:600 13px var(--display)}
+.map ul{list-style:none;margin:0;padding-left:18px;border-left:2px solid var(--line)}
+.map > ul{padding-left:0;border-left:0}
+.map li{margin:6px 0;color:var(--mut)}
+.map li span{display:inline-block;padding:2px 10px;border-radius:99px;background:var(--sky)}
+.map li.v > span{background:var(--ink);color:var(--paper);font-weight:600}
+.map li.v.good > span{background:var(--ok)}.map li.v.bad > span{background:var(--bad)}
+
+/* ---------- открытый ответ ---------- */
+textarea.ta{width:100%;min-height:120px;resize:vertical;border:2px solid var(--line);border-radius:16px;padding:14px 16px;background:var(--paper);line-height:1.5}
+textarea.ta:focus{border-color:var(--ink);outline:0}
+.cnt{text-align:right;font-size:12px;color:var(--mut);margin-top:4px}
+.paper{padding:16px 18px;border-radius:16px;background:var(--paper)}
+.paper h4{margin:0 0 8px;font:600 13px var(--display)}
+.paper p{margin:0;white-space:pre-wrap}
+.paper.ref{background:var(--ochre-t);outline:2px solid var(--ochre)}
+.rub{display:grid;gap:8px;margin:12px 0 4px}
+.rub label{display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:14px;background:var(--paper);cursor:pointer;border:2px solid transparent}
+.rub input{position:absolute;opacity:0}
+.rub i{flex:none;width:24px;height:24px;border-radius:8px;border:3px solid var(--line);display:grid;place-items:center;font-style:normal;color:transparent;font-weight:700;transition:.15s}
+.rub input:checked + i{background:var(--ok);border-color:var(--ok);color:#fff}
+.rub label:has(input:checked){border-color:var(--ok);background:var(--okb)}
+.rub input:focus-visible + i{outline:3px solid var(--focus);outline-offset:2px}
+
+/* ---------- 100 баллов ---------- */
+.stack{display:flex;height:46px;border-radius:14px;overflow:hidden;background:var(--sky);gap:2px}
+.stack > div{display:grid;place-items:center;color:#fff;font:700 13px var(--display);min-width:0;transition:flex-grow .25s;overflow:hidden;white-space:nowrap}
+.stack > div.c1{background:var(--c1);color:#0E1B3D}.stack > div.c2{background:var(--c2)}.stack > div.c3{background:var(--c3)}.stack > div.c4{background:var(--c4)}
+:root:not([data-theme=light]) .stack > div.c2,:root:not([data-theme=light]) .stack > div.c3,:root:not([data-theme=light]) .stack > div.c4{color:#12122A}
+@media (prefers-color-scheme:light){:root:not([data-theme=dark]) .stack > div.c2,:root:not([data-theme=dark]) .stack > div.c3,:root:not([data-theme=dark]) .stack > div.c4{color:#fff}}
+:root[data-theme=light] .stack > div.c2,:root[data-theme=light] .stack > div.c3,:root[data-theme=light] .stack > div.c4{color:#fff}
+.alloc{display:grid;gap:4px;margin-top:16px}
+.alloc .a{display:grid;grid-template-columns:150px 1fr 44px;gap:12px;align-items:center}
+.alloc .a b{font:700 18px var(--display);text-align:right}
+.alloc .a label{display:flex;align-items:center;gap:8px;font-weight:500}
+.alloc .a label i{width:14px;height:14px;border-radius:5px;flex:none}
+.left{display:flex;align-items:baseline;gap:8px;margin:14px 0 0}
+.left b{font:700 28px var(--display)}
+@media(max-width:560px){.alloc .a{grid-template-columns:1fr 44px}.alloc .a label{grid-column:1/-1}}
+.legend2{display:flex;gap:8px 16px;flex-wrap:wrap;margin:12px 0 0;font-size:14px}
+.legend2 span{display:inline-flex;gap:6px;align-items:center}
+.legend2 i{width:12px;height:12px;border-radius:4px}
+.bl{font:600 13px var(--display);margin:16px 0 8px}
+
+/* ---------- шкала согласия ---------- */
+.lik{padding:16px 0;border-top:1px solid var(--line)}
+.lik:first-of-type{border-top:0;padding-top:0}
+.lik p{margin:0 0 10px;font-weight:600}
+.five{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:520px}
+.five label{position:relative;display:grid;place-items:center;height:46px;border-radius:14px;background:var(--paper);border:2px solid var(--line);cursor:pointer;font:700 15px var(--display);transition:.12s}
+.five label:hover{border-color:var(--mut)}
+.five input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.five label:has(input:checked){background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateY(-2px)}
+.five label:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
+.five label.was{border-style:dashed;border-color:var(--c2);color:var(--c2)}
+.ends{display:flex;justify-content:space-between;max-width:520px;font-size:12px;color:var(--mut);margin-top:6px}
+.dumb{position:relative;height:62px;margin:6px 14px 4px;max-width:520px}
+.dumb .ln{position:absolute;left:0;right:0;top:22px;height:4px;border-radius:3px;background:var(--sky)}
+.dumb .tk{position:absolute;top:42px;transform:translateX(-50%);font-size:11px;color:var(--mut)}
+.dumb .mv{position:absolute;top:21px;height:6px;border-radius:3px;transition:width .8s cubic-bezier(.3,.9,.3,1)}
+.dumb .mv.ok{background:var(--ok)}.dumb .mv.bad{background:var(--bad)}.dumb .mv.same{background:var(--mut);height:0}
+.dumb .pin{top:24px}
+
+
+/* ---------- график с прогнозом ---------- */
+.chart{margin:6px 0 4px}
+.crow{display:grid;grid-template-columns:116px 1fr 76px;gap:8px;align-items:center;margin:10px 0}
+.crow .cl{font-weight:600;font-size:15px;line-height:1.25}
+.crow .cv{font-weight:600;font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
+.ct{position:relative;height:34px;border-radius:10px;background:var(--sky)}
+.cb{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:10px;background:var(--ochre);min-width:4px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.cb.pend{background:repeating-linear-gradient(45deg,rgba(242,179,61,.35) 0 8px,rgba(242,179,61,.15) 8px 16px);outline:2px dashed var(--ochre-d);outline-offset:-2px;transition:none}
+.cg{position:absolute;top:-5px;bottom:-5px;width:4px;margin-left:-2px;border-radius:2px;background:var(--c2)}
+.cg::after{content:"ты";position:absolute;top:-17px;left:50%;transform:translateX(-50%);font:700 10px var(--display);color:var(--c2)}
+.axis{display:flex;justify-content:space-between;margin:2px 76px 0 124px;font-size:12px;color:var(--mut)}
+.pick{margin-top:14px;padding:16px 18px;border-radius:16px;background:var(--paper)}
+.pick .readout{margin-bottom:0}
+@media(max-width:560px){.crow{grid-template-columns:84px 1fr 64px}.axis{margin:2px 64px 0 92px}}
+
+/* ---------- раскрытие картинки ---------- */
+.tile{transition:opacity .7s}
+.tile.off{opacity:0;pointer-events:none}
+.guess{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.chip.wrongo{opacity:.4;text-decoration:line-through;pointer-events:none}
+
+/* ---------- матрица 2×2 ---------- */
+.mx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,260px);gap:18px;align-items:start}
+@media(max-width:760px){.mx{grid-template-columns:1fr}}
+.board{position:relative;aspect-ratio:1;width:100%;max-width:560px;border-radius:18px;background:var(--paper);border:2px solid var(--line);overflow:hidden;cursor:crosshair;touch-action:manipulation}
+.board .bx,.board .by{position:absolute;background:var(--line);pointer-events:none}
+.board .bx{left:50%;top:0;bottom:0;width:2px;margin-left:-1px}
+.board .by{top:50%;left:0;right:0;height:2px;margin-top:-1px}
+.quad{position:absolute;box-sizing:border-box;margin:0;width:50%;height:50%;padding:10px 12px;font:600 12px/1.25 var(--display);color:var(--mut);pointer-events:none}
+.quad.tl{left:0;top:0}.quad.tr{left:50%;top:0;text-align:right;background:rgba(242,179,61,.2)}
+.quad.bl{left:0;top:50%;display:flex;align-items:flex-end}.quad.br{left:50%;top:50%;text-align:right;display:flex;align-items:flex-end;justify-content:flex-end}
+.ax{position:absolute;font-size:11px;font-weight:600;color:var(--mut);pointer-events:none;background:var(--paper);padding:0 4px}
+.ax.t{top:2px;left:50%;transform:translateX(-50%)}.ax.b{bottom:2px;left:50%;transform:translateX(-50%)}
+.ax.l{left:2px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:left center;margin-top:34px}
+.ax.r{right:2px;top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:right center;margin-top:34px}
+.pin2{position:absolute;transform:translate(-50%,-50%);width:32px;height:32px;border-radius:50%;border:3px solid var(--surface);background:var(--ink);color:var(--paper);font:700 12px var(--display);cursor:pointer;display:grid;place-items:center;box-shadow:0 3px 8px rgba(14,27,61,.4);padding:0;animation:pop .25s}
+.pin2:hover{background:var(--c2);color:#fff}
+.fcards{display:grid;gap:8px}
+.fcard{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 12px;cursor:pointer;font-size:14px;line-height:1.3}
+.fcard b{font:700 12px var(--display);background:var(--ochre);color:#0E1B3D;border-radius:8px;min-width:28px;height:28px;display:grid;place-items:center}
+.fcard.sel{border-color:var(--ink);background:var(--ochre-t);transform:translateX(4px)}
+.fcard.placed{opacity:.5}
+.qlist{display:grid;gap:8px;margin-top:6px}
+.qlist li{list-style:none;padding:10px 14px;border-radius:12px;background:var(--paper);font-size:14px}
+.qlist b{font-family:var(--display);font-size:12px}
+
+/* ---------- замок ---------- */
+.lock{display:grid;justify-items:center;margin:4px 0 20px}
+.shackle{width:96px;height:56px;border:14px solid #8E8CB8;border-bottom:0;border-radius:60px 60px 0 0;margin-bottom:-2px;transform-origin:100% 100%;transition:transform .7s cubic-bezier(.3,1.4,.5,1)}
+.lock.open .shackle{transform:translateY(-22px) rotate(-24deg)}
+.lbody{padding:18px 22px 20px;border-radius:20px;background:linear-gradient(#F5BE52,#E39B1E);box-shadow:0 14px 28px -14px rgba(14,27,61,.6),inset 0 -6px 0 rgba(0,0,0,.12)}
+.dials{display:flex;gap:12px}
+.dial{width:80px;height:70px;border-radius:14px;background:#0E1B3D;color:#6C6AA0;display:grid;place-items:center;font:700 30px var(--display);letter-spacing:-.03em;box-shadow:inset 0 4px 10px rgba(0,0,0,.45)}
+.dial.on{color:#DCE6FF}
+.dial.shake{animation:shake .4s}
+.lq{display:grid;gap:12px}
+.lrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--paper);border:2px solid transparent}
+.lrow.ok{background:var(--okb);border-color:var(--ok)}
+.lrow .qt{margin:0}
+.lrow .tiny{grid-column:1/-1;font-size:13px;color:var(--mut);margin:0}
+.lrow.bad{animation:shake .4s;border-color:var(--bad)}
+@media(max-width:560px){.lrow{grid-template-columns:1fr auto}.lrow .qt{grid-column:1/-1}}
+.unlock{margin-top:18px}
+
+/* ---------- блиц с таймером ---------- */
+.sw{display:inline-flex;align-items:center;gap:12px;cursor:pointer;font-weight:600}
+.sw input{position:absolute;opacity:0}
+.sw i{width:52px;height:30px;border-radius:99px;background:var(--line);position:relative;transition:background .2s;flex:none}
+.sw i::after{content:"";position:absolute;left:4px;top:4px;width:22px;height:22px;border-radius:50%;background:var(--surface);box-shadow:0 2px 4px rgba(0,0,0,.3);transition:transform .2s}
+.sw input:checked + i{background:var(--ok)}
+.sw input:checked + i::after{transform:translateX(22px)}
+.sw input:focus-visible + i{outline:3px solid var(--focus);outline-offset:2px}
+.tbar{height:14px;border-radius:9px;background:var(--sky);overflow:hidden;margin-bottom:6px}
+.tbar i{display:block;height:100%;width:100%;background:var(--ok)}
+.tbar[data-s=mid] i{background:var(--ochre)}.tbar[data-s=low] i{background:var(--bad)}
+.tmeta{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin-bottom:16px;font-variant-numeric:tabular-nums}
+.stmt{padding:22px;border-radius:18px;background:var(--paper);border:3px solid transparent;font:600 clamp(18px,3vw,23px)/1.35 var(--display);min-height:130px;display:flex;align-items:center;transition:border-color .15s,background .15s}
+.stmt.ok{border-color:var(--ok);background:var(--okb)}.stmt.bad{border-color:var(--bad);background:var(--badb)}
+.keys{font-size:12px;color:var(--mut);text-align:center;margin-top:10px}
+
+/* ---------- карточки ---------- */
+.deck{perspective:1100px;max-width:540px;margin:0 auto 6px}
+.card3d{position:relative;display:block;width:100%;height:230px;border:0;background:none;padding:0;cursor:pointer;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.3,1.2,.4,1)}
+.card3d.flipped{transform:rotateY(180deg)}
+.card3d:focus-visible{outline:3px solid var(--focus);outline-offset:6px;border-radius:24px}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px;display:grid;place-items:center;padding:26px;text-align:center;box-shadow:var(--shadow)}
+.face.front{background:linear-gradient(135deg,#F5C25A,#E39B1E);color:#0E1B3D;font:700 clamp(20px,3.4vw,26px)/1.25 var(--display)}
+.face.back{background:var(--ink);color:var(--paper);transform:rotateY(180deg);font:500 18px/1.5 var(--body)}
+.face small{display:block;margin-top:10px;font:600 12px var(--display);opacity:.7}
+.deckbar{display:flex;gap:6px;justify-content:center;margin:14px 0}
+.deckbar i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.deckbar i.done{background:var(--ok)}.deckbar i.again{background:var(--ochre)}.deckbar i.cur{outline:3px solid var(--ink);outline-offset:2px}
+.know{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:540px;margin:0 auto}
+
+/* ---------- анимации ---------- */
+@keyframes pop{0%{transform:scale(.85)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes swipe{from{background-size:0 100%}to{background-size:100% 100%}}
+@keyframes pulse{0%{transform:scale(1);opacity:.55}100%{transform:scale(2.3);opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.rise{animation:rise .35s both}
+@media (prefers-reduced-motion:no-preference){.hs .ring{animation:pulse 1.9s infinite}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ---------- факты ---------- */
+.facts{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.facts li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.facts b{font:700 13px var(--display);background:var(--ochre);color:#0E1B3D;border-radius:10px;min-width:34px;height:34px;display:grid;place-items:center}
+.foot{margin:60px 0 0;color:var(--mut);font-size:14px}
+.sec-h{font:700 clamp(20px,3vw,28px)/1.2 var(--display);margin:0 0 14px;letter-spacing:-.01em}
+
+/* ---------- мобильные ---------- */
+@media(max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr);padding:0 16px}
+  .ruler{position:sticky;top:0;z-index:20;height:auto;padding:10px 0 8px;background:var(--paper)}
+  .ruler .track{margin:0;width:auto;height:44px}
+  .ruler .tape{left:0;right:0;top:auto;bottom:8px;width:auto;height:3px;
+    background:repeating-linear-gradient(to right,transparent 0 11px,var(--ink) 11px 12px),var(--line)}
+  .ruler .tick{top:auto!important;bottom:-2px;transform:none;width:auto;left:var(--x)!important;margin-left:-9px;padding:2px 3px;text-align:center}
+  .ruler .tick::after{display:none}
+  .ruler .head{top:auto!important;bottom:6px;transform:translateX(-50%);width:30px;height:30px;left:var(--hx)!important;transition:left .12s linear}
+  .hero .in{padding:30px 22px 26px}
+  .stage{padding:18px 16px}
+  .mh{grid-template-columns:1fr}
+  .para,.w{font-size:17px}
+}
+
+/* вариант для вставки в шаг: без линейки, текст про жирафов выезжает сбоку */
+.shell{display:block!important}.ruler{display:none!important}
+.main{padding:0 0 24px!important;max-width:880px;margin:0 auto}
+#facts{position:fixed;top:0;right:0;bottom:0;width:min(440px,92vw);margin:0;padding:22px 20px 28px;background:var(--surface);border-left:2px solid var(--line);box-shadow:-18px 0 40px -20px rgba(14,27,61,.45);overflow:auto;z-index:60;transform:translateX(105%);visibility:hidden;transition:transform .28s ease,visibility 0s .28s}
+#facts.open{transform:none;visibility:visible;transition:transform .28s ease}
+#facts .stage{box-shadow:none;border:0;padding:0;background:none}
+#facts .fx{float:right;margin:-4px 0 0 8px}
+#fveil{position:fixed;inset:0;background:rgba(20,19,50,.35);z-index:55;opacity:0;visibility:hidden;transition:opacity .28s,visibility 0s .28s}
+#fveil.open{opacity:1;visibility:visible;transition:opacity .28s}
+#ftab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:50;writing-mode:vertical-rl;padding:14px 9px;border:2px solid var(--line);border-right:0;border-radius:14px 0 0 14px;background:var(--ochre);color:#0E1B3D;font:700 13px var(--display);cursor:pointer;box-shadow:-6px 6px 18px -10px rgba(14,27,61,.5)}
+#ftab:hover{background:var(--ochre-d)}
+@media(prefers-reduced-motion:reduce){#facts,#fveil{transition:none!important}}
+
+/* ================================
+   Skypro College — presentation layer
+   Branding and adaptive interface only.
+   Interactive JavaScript and mechanics unchanged.
+   ================================ */
+:root{
+  --paper:#F7F8FC;--surface:#FFFFFF;--ink:#151A24;--mut:#626B7A;--line:#E2E6EE;
+  --sky:#F0EFFD;--ochre:#D6FB50;--ochre-t:#F4FFD7;--ochre-d:#3E5600;
+  --accent:#7755F9;--ok:#087A62;--okb:#E0F8EE;--bad:#B53161;--badb:#FDEAF0;
+  --btn:#171923;--btntx:#FFFFFF;--focus:#7755F9;
+  --hero-base:#1B1832;--hero-patch:#312B55;--hero-ink:#FFFFFF;
+  --c1:#D6FB50;--c2:#7D67F6;--c3:#1CC5CB;--c4:#EE70AE;
+  --shadow:0 12px 44px -34px rgba(24,23,52,.35),0 2px 6px rgba(20,24,42,.025);
+  --r:24px;
+  --display:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --body:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+ --paper:#11121E;--surface:#1B1D2D;--ink:#F7F7FF;--mut:#B3B7C9;--line:#383A54;--sky:#302C4B;
+ --ochre:#D6FB50;--ochre-t:#313B27;--ochre-d:#D6FB50;--accent:#B6A5FF;
+ --ok:#82EDC3;--okb:#173C33;--bad:#FF99BA;--badb:#482736;
+ --btn:#D6FB50;--btntx:#151A24;--focus:#D6FB50;
+ --hero-base:#1B1832;--hero-patch:#312B55;--hero-ink:#fff;
+ --c1:#D6FB50;--c2:#A89AFF;--c3:#57E3E8;--c4:#FF97C8;
+ --shadow:0 18px 40px -24px rgba(0,0,0,.65);
+}}
+:root[data-theme=dark]{
+ --paper:#11121E;--surface:#1B1D2D;--ink:#F7F7FF;--mut:#B3B7C9;--line:#383A54;--sky:#302C4B;
+ --ochre:#D6FB50;--ochre-t:#313B27;--ochre-d:#D6FB50;--accent:#B6A5FF;
+ --ok:#82EDC3;--okb:#173C33;--bad:#FF99BA;--badb:#482736;
+ --btn:#D6FB50;--btntx:#151A24;--focus:#D6FB50;
+ --hero-base:#1B1832;--hero-patch:#312B55;--hero-ink:#fff;
+ --c1:#D6FB50;--c2:#A89AFF;--c3:#57E3E8;--c4:#FF97C8;
+ --shadow:0 18px 40px -24px rgba(0,0,0,.65);
+}
+body{font-size:15px;line-height:1.65;background:var(--paper)}
+body:before{content:"";height:5px;display:block;background:linear-gradient(90deg,#1CC5E4 0 28%,#D6FB50 28% 49%,#8361F8 49% 100%)}
+.main{max-width:960px;padding:0 16px 36px!important}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 0 28px}
+.brandlogo{display:inline-flex;align-items:center;gap:10px;flex:none;color:var(--ink)}
+.brandmark{display:inline-block;position:relative;width:52px;height:38px}
+.brandmark i{display:block;position:absolute;top:0;width:32px;height:36px;clip-path:polygon(0 0,100% 50%,0 100%);border-radius:6px}
+.brandmark i:first-child{left:0;background:#15C2E9}
+.brandmark i:last-child{left:19px;background:#C3EF22;filter:drop-shadow(-1px 0 0 rgba(255,255,255,.2))}
+.brandword{font-size:30px;font-weight:850;letter-spacing:-.065em;line-height:.86;display:flex;flex-direction:column}
+.brandcollege{font-size:12px;font-weight:750;line-height:1;letter-spacing:.24em;text-transform:uppercase;color:var(--mut);margin:7px 0 0 2px}
+.brandcontext{font-size:12px;letter-spacing:.04em;font-weight:700;color:var(--mut);display:flex;align-items:center;gap:9px}
+.brandpoint{width:8px;height:8px;background:#B6EA2D;border-radius:50%;flex:none}
+.brand-sep{color:#8361F8;font-weight:900}
+.hero{border-radius:32px;background:var(--hero-base);margin:0 0 40px;min-height:400px;box-shadow:0 22px 52px -40px rgba(31,24,91,.8)}
+.hero .skin{opacity:.39}
+.hero::before{content:"";position:absolute;width:350px;height:350px;border:32px solid #21C9E9;border-radius:50%;right:-156px;top:-143px;transform:rotate(12deg);opacity:.98;z-index:-1}
+.hero::after{content:"";position:absolute;width:175px;height:175px;background:#D6FB50;border-radius:48px;right:80px;bottom:-114px;transform:rotate(-32deg);z-index:-1}
+.hero .in{position:relative;max-width:740px;padding:38px 42px 40px;z-index:1}
+.heroeyebrow{display:flex;align-items:center;gap:12px;color:#DAE4FA;font-weight:800;font-size:12px;letter-spacing:.11em;line-height:1.4;margin-bottom:30px;flex-wrap:wrap}
+.eyeline{width:25px;height:4px;border-radius:5px;background:#D6FB50;display:block}
+.herocounter{border:1px solid rgba(255,255,255,.4);border-radius:100px;padding:5px 12px;color:#fff;margin-left:4px;letter-spacing:.02em}
+.hero h1{font-size:clamp(34px,5vw,56px);letter-spacing:-.055em;line-height:1.1;max-width:15ch;margin:0 0 18px}
+.hero p{font-size:16px;line-height:1.6;color:#E6E3F6;max-width:54ch}
+.hero .howto{margin:23px 0 0;gap:8px}
+.hero .howto li{background:rgba(255,255,255,.12);color:#fff;padding:5px 11px;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,.08)}
+.hero .links{margin-top:26px}
+.hero .links a,.hero .links button{background:#D6FB50;color:#171923;border-radius:12px;padding:11px 17px;font-size:14px;font-weight:750;box-shadow:none;transition:transform .15s,background .15s}
+.hero .links a:hover,.hero .links button:hover{transform:translateY(-2px)}
+.hero .links button.alt{border:1px solid rgba(255,255,255,.36);box-shadow:none;background:rgba(255,255,255,.08);color:#fff}
+.hero .links button.alt:first-child{background:#D6FB50;color:#151923;border-color:#D6FB50}
+.chapterhead{display:flex;justify-content:space-between;gap:18px;align-items:center;margin:0 0 12px}
+.chapterlabel{font-size:12px;letter-spacing:.11em;white-space:nowrap;font-weight:850;color:var(--ink);display:flex;align-items:center;gap:14px}
+.chapterline{display:inline-block;height:2px;width:38px;background:#D6FB50}
+.chapterhead p{font-size:13px;color:var(--mut);margin:0}
+.chapterlinks{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 56px}
+.chapterlinks a{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:9px 12px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:700;transition:transform .15s,border-color .15s}
+.chapterlinks a span{color:#7755F9;font-weight:850;font-size:12px}
+.chapterlinks a:hover{border-color:#7755F9;transform:translateY(-2px)}
+.mech{margin-bottom:66px;scroll-margin-top:26px}
+.mh{grid-template-columns:70px 1fr;gap:8px 15px;margin-bottom:18px}
+.mh .num{display:grid;place-items:center;width:62px;height:62px;border-radius:17px;background:#D6FB50;color:#161923;font-size:31px;letter-spacing:-.075em;line-height:1}
+.mh h2{font-size:clamp(21px,2.7vw,29px);line-height:1.17;letter-spacing:-.038em;margin:1px 0 8px;font-weight:800}
+.mh .desc{font-size:14px;line-height:1.6;max-width:70ch}
+.mh .ids{margin-top:10px;font-size:12px}
+.mh .ids span{font-weight:750;background:var(--sky);padding:4px 10px;color:var(--accent)}
+.stage{border:1px solid var(--line);border-radius:26px;padding:28px 30px 28px;box-shadow:var(--shadow);position:relative}
+.stage:before{content:"";position:absolute;left:28px;right:28px;top:-1px;height:3px;background:linear-gradient(90deg,#D6FB50 0 36%,#1CC5CB 36% 62%,#8361F8 62% 100%);border-radius:0 0 6px 6px;opacity:.95}
+.lead,.qt{letter-spacing:-.006em}
+.stepper{margin-bottom:20px}
+.steps li.on i{background:#D6FB50;border-color:#171923;color:#171923}
+.steps li.done i{background:#171923;border-color:#171923;color:#fff}
+.btn{border-radius:12px;padding:12px 19px;box-shadow:none;font-weight:750;letter-spacing:-.012em}
+.btn:hover{box-shadow:0 5px 18px -10px rgba(15,17,32,.4)}
+.btn.ghost{box-shadow:inset 0 0 0 1.5px var(--line);border-radius:12px}
+.btn.sm{padding:8px 13px}
+.pill{border-radius:11px}
+.pill[aria-pressed=true]{background:var(--btn);color:var(--btntx)}
+.tag{border-radius:9px}
+.quote{background:var(--ochre-t);border-left-color:#B3DD3B;border-radius:8px 14px 14px 8px}
+.quote b{color:var(--ochre-d)}
+.code summary{font-weight:650}
+details.code{margin-top:12px;padding:0 3px}
+details.code summary::before{content:"</>";background:var(--sky);color:var(--accent)}
+details.code pre{background:#151628;color:#F0F2FF;max-height:460px;border:1px solid #383A54}
+.rng{--c:var(--accent)}
+.rng::-webkit-slider-runnable-track{background:linear-gradient(90deg,var(--c) var(--p),var(--sky) var(--p))}
+.pin.f{background:#D6FB50;border-color:var(--ink)}
+.colx.ref,.paper.ref{outline-color:#B6DC40}
+.big.t{background:var(--okb);color:var(--ok)}
+.big.f{background:var(--badb);color:var(--bad)}
+.face.front{background:linear-gradient(135deg,#D6FB50,#BEEA28);color:#131A24}
+.face.back{background:#272044;color:#fff}
+.lock .lbody{background:linear-gradient(#D6FB50,#B9E82F)}
+.lbody{background:linear-gradient(#D6FB50,#B9E82F)}
+.dial{background:#1C1B31}
+#ftab{background:#D6FB50;color:#131821;border:1px solid #BCE533;border-right:0;border-radius:14px 0 0 14px;font-size:12px;letter-spacing:.025em;box-shadow:-5px 5px 20px -12px rgba(22,22,38,.5)}
+#ftab:hover{background:#BDE934}
+#facts{box-shadow:-25px 0 70px -40px rgba(17,17,29,.55);border-left:3px solid #8361F8}
+#facts .sec-h{letter-spacing:-.035em}
+#facts .facts b{background:#D6FB50;color:#151923}
+:root[data-theme=dark] .steps li.done i{background:#D6FB50;border-color:#D6FB50;color:#161923}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .steps li.done i{background:#D6FB50;border-color:#D6FB50;color:#161923}}
+@media(max-width:760px){
+ .main{padding:0 12px 30px!important}
+ .brandbar{padding:19px 0 22px}
+ .brandcontext{font-size:11px;max-width:170px;text-align:right;justify-content:flex-end}
+ .brand-sep{display:none}
+ .hero{border-radius:24px;min-height:0;margin-bottom:32px}
+ .hero .in{padding:27px 24px 32px;max-width:none}
+ .hero::before{width:230px;height:230px;border-width:23px;right:-168px;top:-95px;opacity:.72}
+ .hero::after{width:130px;height:130px;right:-46px;bottom:-82px;border-radius:35px}
+ .hero h1{font-size:clamp(31px,6.3vw,42px);max-width:20ch}
+ .hero p{font-size:14px;max-width:54ch}
+ .heroeyebrow{margin-bottom:22px;font-size:11px}
+ .chapterhead{align-items:flex-start;flex-direction:column;gap:4px}
+ .chapterlinks{margin-bottom:43px}
+ .mh{grid-template-columns:58px 1fr;gap:8px 10px}
+ .mh .num{width:50px;height:50px;font-size:26px;border-radius:14px}
+ .mh h2{font-size:20px;margin-top:2px}
+ .mh .desc{font-size:13px}
+ .stage{padding:24px 16px 20px;border-radius:20px}
+ .stage:before{left:18px;right:18px}
+}
+@media(max-width:400px){
+ .brandcontext{display:none}
+ .hero .in{padding:25px 18px 27px}
+ .heroeyebrow{font-size:10px;gap:7px}
+ .hero .howto li{font-size:11px}
+ .hero .links a,.hero .links button{font-size:12px;padding:10px 12px}
+ .chapterlinks a{font-size:12px;padding:8px 10px}
+ .chapterlinks{gap:6px}
+ .stage{padding:22px 13px 18px}
+ .mh h2{font-size:19px}
+}
+
+
+.nextlink{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.placers{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 2px;border-top:1px solid var(--line);margin-top:12px}
+.placers .hint{flex:0 0 100%;margin:0 0 3px}
+.placers .btn{font-size:12px;white-space:normal;text-align:left}
+.history{margin:16px 0;padding:14px 17px;background:var(--paper);border:1px solid var(--line);border-radius:14px;font-size:14px}
+.history b{display:block;margin-bottom:4px}
+.history ol{margin:0;padding-left:22px}
+.history li{padding:2px 0}
+
+/* ---------- Навигация методиста ---------- */
+[hidden]{display:none!important}
+.taskpicker{scroll-margin-top:18px;margin:0 0 30px}
+.taskpicker-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:19px}
+.tinycaption{display:block;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.12em;margin-bottom:7px}
+.taskpicker h2{font:800 clamp(25px,3.5vw,34px)/1.12 var(--display);letter-spacing:-.04em;margin:0 0 9px}
+.taskpicker-top p{color:var(--mut);font-size:14px;line-height:1.55;margin:0;max-width:62ch}
+.view-switch{display:flex;gap:3px;align-items:center;border:1px solid var(--line);background:var(--surface);padding:4px;border-radius:14px;flex-shrink:0}
+.view-switch button{background:transparent;border:0;border-radius:10px;font-size:13px;font-weight:750;cursor:pointer;padding:10px 13px;color:var(--mut);white-space:nowrap}
+.view-switch button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.task-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.taskcard{display:flex;align-items:flex-start;gap:11px;text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:17px 14px;border-radius:18px;cursor:pointer;min-height:116px;transition:border-color .14s,background .14s,transform .14s}
+.taskcard:hover{border-color:var(--accent);transform:translateY(-2px)}
+.taskcard[aria-pressed=true]{border-color:var(--accent);background:var(--sky);box-shadow:inset 0 0 0 1px var(--accent)}
+.taskcard-num{font:800 12px var(--display);color:var(--accent);padding-top:2px;flex:none}
+.taskcard-body{display:grid;gap:9px;min-width:0;flex:1}
+.taskcard-body strong{font:750 14px/1.35 var(--display);letter-spacing:-.014em}
+.taskcard-body small{font-size:12px;color:var(--mut);font-weight:600}
+.taskcard-arrow{color:var(--accent);font-size:17px;font-weight:800;line-height:1;flex:none}
+.resultbar{scroll-margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid var(--line);padding:20px 0 17px;margin:0 0 11px}
+.resultbar:focus{outline:none}
+.resultbar h2{font:800 clamp(22px,2.7vw,27px)/1.18 var(--display);letter-spacing:-.027em;margin:0 0 5px}
+.resultbar p{margin:0;color:var(--mut);font-size:13px}
+#clear-task{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;cursor:pointer;padding:9px 14px;font-weight:700;font-size:13px;flex-shrink:0}
+#clear-task:hover{border-color:var(--accent)}
+.tasktags{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0 2px!important}
+.tasktags span{font-size:11px;font-weight:750;border:1px solid var(--line);border-radius:8px;padding:3px 9px;background:var(--surface);color:var(--mut)}
+.method{margin:15px 0 0;border:1px solid var(--line);background:var(--surface);border-radius:15px;padding:0 16px}
+.method summary{display:flex;align-items:center;gap:11px;cursor:pointer;padding:14px 0;font-size:14px;font-weight:750;color:var(--ink);list-style:none}
+.method summary::before{content:'?';width:22px;height:22px;display:grid;place-items:center;border-radius:7px;background:#D6FB50;color:#171923;font-size:13px;font-weight:850}
+.method summary::after{content:'⌄';font-weight:800;margin-left:auto;color:var(--accent);font-size:20px;line-height:1}
+.method[open] summary::after{transform:rotate(180deg)}
+.method summary::-webkit-details-marker{display:none}
+.method dl{display:grid;gap:0;margin:0 0 14px;padding-top:6px;border-top:1px solid var(--line)}
+.method dl>div{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.method dl>div:last-child{border-bottom:0}
+.method dt{font-size:12px;color:var(--mut);font-weight:750}
+.method dd{font-size:13px;line-height:1.5;margin:0}
+@media(max-width:800px){.task-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.taskpicker-top{align-items:flex-start;flex-direction:column}.taskcard{min-height:105px}}
+@media(max-width:540px){.task-grid{grid-template-columns:1fr;gap:7px}.taskcard{min-height:0;align-items:center;padding:13px 14px}.taskcard-body{gap:4px}.taskpicker-top{gap:14px}.view-switch{width:100%}.view-switch button{flex:1}.resultbar{align-items:flex-start;flex-direction:column}.method dl>div{grid-template-columns:78px 1fr}.resultbar h2{font-size:22px}}
+@media(max-width:620px){#ftab{top:auto;right:12px;bottom:12px;transform:none;writing-mode:horizontal-tb;border:1px solid #BCE533;border-radius:12px;padding:10px 12px;box-shadow:0 7px 22px -10px rgba(22,22,38,.55)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="ruler" aria-label="Навигация по механикам">
+    <div class="track" id="track"><div class="tape"></div><div class="head" id="head"></div></div>
+  </aside>
+  <main class="main">
+    <div class="brandbar" aria-label="Оформление в стиле Skypro Колледжа">
+      <div class="brandlogo" aria-label="skypro колледж"><span class="brandmark" aria-hidden="true"><i></i><i></i></span><span class="brandword">skypro<span class="brandcollege">колледж</span></span></div>
+      <div class="brandcontext"><span class="brandpoint"></span> Лаборатория интерактивных заданий <span class="brand-sep">/</span> 20 форматов</div>
+    </div>
+    <header class="hero" id="top">
+      <svg class="skin" id="skin" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+      <div class="in">
+        <div class="heroeyebrow"><span class="eyeline"></span> ПРАКТИКА · ИССЛЕДУЙ МЕХАНИКИ <span class="herocounter">20 / 20</span></div>
+        <h1 id="h1">20 механик под учебную задачу</h1>
+        <p>Выберите учебную задачу, попробуйте механику и посмотрите рекомендации. Все упражнения используют один примерный текст.</p>
+        <ul class="howto"><li>Механики «до и после» идут в четыре шага:</li><li>Прогноз</li><li>Читаем</li><li>Сверка</li><li>Итог</li></ul>
+        <div class="links"><a href="#chooser">Выбрать задачу</a><button class="alt" type="button" data-facts>Текст про жирафов</button><button class="alt" id="theme" type="button">Тема: авто</button></div>
+      </div>
+    </header>
+    <section class="taskpicker" id="chooser" aria-labelledby="choose-title">
+      <div class="taskpicker-top">
+        <div>
+          <span class="tinycaption">НАВИГАЦИЯ ДЛЯ МЕТОДИСТА</span>
+          <h2 id="choose-title">Что должен сделать студент?</h2>
+          <p>Сначала учебное действие — затем механика. Микромеханика не заменяет формат урока.</p>
+        </div>
+        <div class="view-switch" role="group" aria-label="Способ просмотра">
+          <button type="button" data-view="tasks" aria-pressed="true">По задаче</button>
+          <button type="button" data-view="all" aria-pressed="false">Все 20</button>
+        </div>
+      </div>
+      <div class="task-grid" id="task-list" aria-label="Учебные задачи"></div>
+    </section>
+    <div class="resultbar" id="results" tabindex="-1" aria-live="polite">
+      <div><span class="tinycaption">ПОДБОРКА</span><h2 id="result-title">Все 20 механик</h2><p id="result-note">Выберите задачу выше, чтобы отобрать подходящие форматы.</p></div>
+      <button type="button" id="clear-task" hidden>Сбросить выбор</button>
+    </div>
+    <div id="mechs"></div>
+    <section id="facts" class="mech">
+      <h2 class="sec-h">Текст, на котором всё построено</h2>
+      <div class="stage"><ol class="facts" id="factlist"></ol></div>
+    </section>
+  </main>
+</div>
+<script>
+/* ===== Общие помощники ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const fmt = n => String(n).replace('.', ',');
+const escapeHTML = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[ch]));
+const parseNumber = value => { const v = String(value).trim().replace(',', '.'); return /^\d+(?:\.\d+)?$/.test(v) ? Number(v) : NaN; };
+const later = f => requestAnimationFrame(() => requestAnimationFrame(f));
+const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const countUp = (el, to, ms = 800) => {
+  if (calm) { el.textContent = to; return; }
+  const t0 = performance.now();
+  const step = t => { const k = Math.min(1, (t - t0) / ms); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+};
+const STEPS = ['Прогноз', 'Читаем', 'Сверка', 'Итог'];
+const stepper = i => '<ol class="steps">' + STEPS.map((t, k) =>
+  '<li class="' + (k === i ? 'on' : k < i ? 'done' : '') + '"><i>' + (k < i ? '✓' : k + 1) + '</i><span>' + t + '</span></li>').join('') + '</ol>';
+const quote = (n, t) => '<blockquote class="quote"><b>' + (/[,–и]/.test(n) ? 'Факты ' : 'Факт ') + n + '</b><span>' + t + '</span></blockquote>';
+const warn = (root, t) => { const m = root.querySelector('.note'); if (m) m.textContent = t; };
+
+/* ===== 1. Прогноз-слайдер до/после ===== */
+function mountP1(root) {
+  const items = [
+    { q: 'Сколько весит сердце жирафа?', unit: 'кг', min: 0, max: 60, fact: 10, tol: 3, n: 4, read: 'Вес сердца жирафа составляет <mark>10 кг</mark>.' },
+    { q: 'С какой скоростью бежит жираф?', unit: 'км/ч', min: 0, max: 120, fact: 55, tol: 8, n: 5, read: 'Жирафы хорошие бегуны: они преодолевают <mark>до 55 километров в час</mark>.' },
+    { q: 'Сколько лет в среднем живёт жираф в привычной среде?', unit: 'лет', min: 0, max: 60, fact: 25, tol: 4, n: 11, read: 'В привычной среде обитания жирафы в среднем доживают <mark>до 25 лет</mark>.' }
+  ];
+  let stage = 0, before = [], after = [];
+  const pct = (v, it) => (v - it.min) / (it.max - it.min) * 100;
+  const slider = (it, i, v) => '<div class="qcard"><p class="qt">' + it.q + '</p>' +
+    '<div class="readout"><output>' + v + '</output><span>' + it.unit + '</span></div>' +
+    '<input class="rng" type="range" min="' + it.min + '" max="' + it.max + '" value="' + v + '" style="--p:' + pct(v, it) + '%" aria-label="' + it.q + '">' +
+    '<div class="scale"><span>' + it.min + '</span><span>' + it.max + '</span></div>' +
+    (stage === 2 ? '<p class="ghostline">Прогноз до чтения: <b>' + before[i] + ' ' + it.unit + '</b></p>' : '') + '</div>';
+  const result = (it, i) => {
+    const e0 = Math.abs(before[i] - it.fact), e1 = Math.abs(after[i] - it.fact);
+    const tag = e1 <= it.tol ? '<span class="tag ok">в допустимом диапазоне</span>' : e1 < e0 ? '<span class="tag ok">стало ближе</span>' : e1 === e0 ? '<span class="tag">без изменений</span>' : '<span class="tag bad">стало дальше</span>';
+    return '<div class="qcard"><p class="qt">' + it.q + '</p>' +
+      '<div class="rail"><span class="band" style="left:' + pct(it.fact - it.tol, it) + '%;width:' + (2 * it.tol / (it.max - it.min) * 100) + '%"></span>' +
+      '<span class="pin f" style="left:' + pct(it.fact, it) + '%"></span><span class="pin b" style="left:' + pct(before[i], it) + '%"></span>' +
+      '<span class="pin a" data-to="' + pct(after[i], it) + '" style="left:' + pct(before[i], it) + '%"></span></div>' +
+      '<div class="legend"><span><i class="lb"></i>До: <b>' + fmt(before[i]) + '</b></span><span><i class="la"></i>После: <b>' + fmt(after[i]) + '</b></span><span><i class="lf"></i>Факт: <b>' + it.fact + ' ' + it.unit + '</b></span></div>' + tag + '</div>';
+  };
+  function render() {
+    let h = stepper(stage);
+    if (stage === 0) h += '<p class="lead">Правильного ответа пока нет. Просто оцени, как думаешь.</p>' + items.map((it, i) => slider(it, i, Math.round((it.min + it.max) / 2))).join('') + '<div class="row"><button class="btn" data-a="lock">Зафиксировать прогноз</button></div>';
+    if (stage === 1) h += items.map(it => quote(it.n, it.read)).join('') + '<div class="row"><button class="btn" data-a="read">К повторному ответу</button></div>';
+    if (stage === 2) h += '<p class="lead">После чтения изменишь свой прогноз?</p>' + items.map((it, i) => slider(it, i, before[i])).join('') + '<div class="row"><button class="btn" data-a="check">Показать правильные ответы</button></div>';
+    if (stage === 3) {
+      const hit = (arr) => items.filter((it, i) => Math.abs(arr[i] - it.fact) <= it.tol).length;
+      h += items.map(result).join('') + '<div class="sumbox"><div><span class="n">' + hit(before) + ' → <span data-count="' + hit(after) + '">0</span></span><small>попаданий в допуск: до чтения → после</small></div></div>' +
+        '<div class="row"><button class="btn ghost" data-a="again">Пройти заново</button></div>';
+    }
+    root.innerHTML = h;
+    root.querySelectorAll('.pin.a').forEach(p => later(() => { p.style.left = p.dataset.to + '%'; }));
+    const c = root.querySelector('[data-count]'); if (c) countUp(c, +c.dataset.count, 900);
+  }
+  root.addEventListener('input', e => {
+    if (e.target.type !== 'range') return;
+    const it = items[[...root.querySelectorAll('.rng')].indexOf(e.target)];
+    e.target.style.setProperty('--p', pct(+e.target.value, it) + '%');
+    e.target.parentNode.querySelector('output').textContent = e.target.value;
+  });
+  root.addEventListener('click', e => {
+    const a = e.target.dataset.a; if (!a) return;
+    const vals = () => [...root.querySelectorAll('.rng')].map(x => +x.value);
+    if (a === 'lock') { before = vals(); stage = 1; }
+    else if (a === 'read') stage = 2;
+    else if (a === 'check') { after = vals(); stage = 3; }
+    else if (a === 'again') stage = 0;
+    render();
+  });
+  render();
+}
+
+/* ===== 2. Таблица прогнозов: оценка → факт ===== */
+function mountP2(root) {
+  const rows = [
+    { n: 'Рост взрослой особи', u: 'м', fact: 4.5, tol: 0.5, txt: '≈ 4,5 (у отдельных самцов до 6)' },
+    { n: 'Вес самки', u: 'кг', fact: 850, tol: 60, txt: '800–900' },
+    { n: 'Вес самца', u: 'кг', fact: 1500, tol: 250, txt: 'может превышать 1500' },
+    { n: 'Скорость бега', u: 'км/ч', fact: 55, tol: 8, txt: 'до 55' },
+    { n: 'Вес сердца', u: 'кг', fact: 10, tol: 3, txt: '10' },
+    { n: 'Срок жизни', u: 'лет', fact: 25, tol: 4, txt: 'в среднем 25' }
+  ];
+  let stage = 0, b = [], a = [];
+  const inp = (w, i, v, u) => '<label class="numin"><input type="text" inputmode="decimal" autocomplete="off" data-w="' + w + '" data-i="' + i + '" value="' + (v === undefined ? '' : fmt(v)) + '" aria-label="' + rows[i].n + '"><span>' + u + '</span></label>';
+  function render() {
+    const head = '<tr><th>Показатель</th><th>Мой прогноз<small>до чтения</small></th><th>Мой ответ<small>после чтения</small></th>' + (stage === 3 ? '<th>Факт по тексту</th><th>Итог</th>' : '') + '</tr>';
+    const body = rows.map((r, i) => {
+      const c1 = stage === 0 ? inp('b', i, b[i], r.u) : '<b class="num">' + fmt(b[i]) + '</b> <span class="mut">' + r.u + '</span>';
+      const c2 = stage === 2 ? inp('a', i, a[i] === undefined ? b[i] : a[i], r.u) : stage === 3 ? '<b class="num">' + fmt(a[i]) + '</b> <span class="mut">' + r.u + '</span>' : '<span class="mut">—</span>';
+      let ex = '';
+      if (stage === 3) {
+        const e0 = Math.abs(b[i] - r.fact), e1 = Math.abs(a[i] - r.fact);
+        ex = '<td><b>' + r.txt + '</b> <span class="mut">' + r.u + '</span></td><td><span class="tag ' + (e1 <= r.tol ? 'ok' : e1 > e0 ? 'bad' : '') + '">' + (e1 <= r.tol ? 'в допуске' : e1 < e0 ? 'ближе' : e1 > e0 ? 'дальше' : 'так же') + '</span></td>';
+      }
+      return '<tr><td>' + r.n + '</td><td class="num">' + c1 + '</td><td class="num">' + c2 + '</td>' + ex + '</tr>';
+    }).join('');
+    let h = stepper(stage) + '<div class="tw"><table class="t"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div><p class="note" role="status"></p>';
+    if (stage === 0) h += '<div class="row"><button class="btn" data-a="lock">Зафиксировать прогноз</button></div><p class="hint">Правильного ответа пока нет: просто оцени.</p>';
+    if (stage === 1) h += quote('4–7 и 11', 'Сердце — <mark>10 кг</mark>; до <mark>55 км/ч</mark>; рост около <mark>4,5 м</mark> (у отдельных самцов <mark>6 м</mark>); вес может перевалить за <mark>полторы тонны</mark>; самка <mark>800–900 кг</mark>; в среднем <mark>25 лет</mark>.') + '<div class="row"><button class="btn" data-a="read">К повторному ответу</button></div>';
+    if (stage === 2) h += '<div class="row"><button class="btn" data-a="check">Сверить с фактами</button></div>';
+    if (stage === 3) {
+      const closer = rows.filter((r, i) => Math.abs(a[i] - r.fact) < Math.abs(b[i] - r.fact)).length;
+      const ib = rows.filter((r, i) => Math.abs(b[i] - r.fact) <= r.tol).length, ia = rows.filter((r, i) => Math.abs(a[i] - r.fact) <= r.tol).length;
+      h += '<div class="sumbox"><div><span class="n"><span data-count="' + closer + '">0</span> из ' + rows.length + '</span><small>строк, где ответ стал ближе к факту</small></div><div><span class="n">' + ib + ' → ' + ia + '</span><small>попаданий в допуск: до → после</small></div></div><div class="row"><button class="btn ghost" data-a="again">Заново</button></div>';
+    }
+    root.innerHTML = h;
+    const c = root.querySelector('[data-count]'); if (c) countUp(c, +c.dataset.count);
+  }
+  root.addEventListener('click', e => {
+    const x = e.target.dataset.a; if (!x) return;
+    const get = w => [...root.querySelectorAll('input[data-w=' + w + ']')].map(i => parseNumber(i.value));
+    if (x === 'lock') { const v = get('b'); if (v.some(isNaN)) return warn(root, 'Заполни все строки числами (например, 4,5).'); b = v; a = []; stage = 1; }
+    else if (x === 'read') stage = 2;
+    else if (x === 'check') { const v = get('a'); if (v.some(isNaN)) return warn(root, 'Заполни вторую колонку числами (например, 4,5).'); a = v; stage = 3; }
+    else if (x === 'again') stage = 0;
+    render();
+  });
+  render();
+}
+
+/* ===== 3. Таблица-матрица «выбери колонку» ===== */
+function mountP3(root) {
+  const cols = ['Самец', 'Самка', 'Оба'];
+  const rows = [
+    { t: 'Рост может достигать 6 м', ok: 0, f: 6 },
+    { t: 'Вес 800–900 кг', ok: 1, f: 7 },
+    { t: 'Вес может превышать полторы тонны', ok: 0, f: 6 },
+    { t: 'Есть оссиконы (рожки)', ok: 2, f: 2 },
+    { t: 'Кожа прочная: из неё делают щиты', ok: 2, f: 8 },
+    { t: 'Значительно крупнее по размерам', ok: 0, f: 2 }
+  ];
+  root.innerHTML = '<p class="lead">В каждой строке выбери одну колонку. Опирайся на текст.</p><div class="tw"><table class="t"><thead><tr><th>Утверждение</th>' + cols.map(c => '<th class="c">' + c + '</th>').join('') + '<th class="c">Факт</th></tr></thead><tbody>' +
+    rows.map((r, i) => '<tr data-i="' + i + '"><td>' + r.t + '</td>' + cols.map((c, j) => '<td class="c"><label class="cat"><input type="radio" name="r' + i + '" value="' + j + '" aria-label="' + r.t + ': ' + c + '"><i></i></label></td>').join('') + '<td class="c mut" data-f></td></tr>').join('') +
+    '</tbody></table></div><div class="row"><button class="btn" data-a="chk">Проверить</button><span class="tag" hidden></span></div>';
+  root.addEventListener('click', e => {
+    if (e.target.dataset.a !== 'chk') return;
+    let good = 0;
+    rows.forEach((r, i) => {
+      const tr = root.querySelector('tr[data-i="' + i + '"]'), sel = tr.querySelector('input:checked');
+      [...tr.children].forEach(td => td.classList.remove('ok', 'bad'));
+      if (sel) { const ok = +sel.value === r.ok; if (ok) good++; else sel.closest('td').classList.add('bad'); }
+      tr.children[r.ok + 1].classList.add('ok');
+      tr.querySelector('[data-f]').textContent = '№ ' + r.f;
+    });
+    const t = root.querySelector('.row .tag'); t.hidden = false; t.className = 'tag ' + (good === rows.length ? 'ok' : ''); t.textContent = 'Верно ' + good + ' из ' + rows.length;
+  });
+}
+
+/* ===== 4. Таблица с выпадающими ячейками ===== */
+function mountP4(root) {
+  const rows = [
+    { k: 'Отряд', o: ['Хищные', 'Парнокопытные', 'Непарнокопытные'], ok: 'Парнокопытные', f: 2 },
+    { k: 'Общий предок жил, млн лет назад', o: ['≈ 5', '≈ 50', '≈ 500'], ok: '≈ 50', f: 2 },
+    { k: 'Рост взрослой особи', o: ['≈ 2 м', '≈ 4,5 м', '≈ 8 м'], ok: '≈ 4,5 м', f: 6 },
+    { k: 'Вес сердца', o: ['1 кг', '10 кг', '50 кг'], ok: '10 кг', f: 4 },
+    { k: 'Максимальная скорость', o: ['25 км/ч', '55 км/ч', '90 км/ч'], ok: '55 км/ч', f: 5 },
+    { k: 'Любимое лакомство', o: ['трава', 'листья акации', 'кора'], ok: 'листья акации', f: 10 },
+    { k: 'Срок жизни в среднем', o: ['5 лет', '25 лет', '60 лет'], ok: '25 лет', f: 11 }
+  ];
+  rows.forEach(r => r.o = shuffle(r.o));
+  root.innerHTML = '<p class="lead">Заполни карточку жирафа: в каждой ячейке выбери значение.</p><div class="tw"><table class="t"><thead><tr><th>Показатель</th><th>Значение</th></tr></thead><tbody>' +
+    rows.map((r, i) => '<tr data-i="' + i + '"><td>' + r.k + '</td><td><select class="sel" aria-label="' + r.k + '"><option value="">выбери</option>' + r.o.map(x => '<option>' + x + '</option>').join('') + '</select><span class="mark"></span></td></tr>').join('') +
+    '</tbody></table></div><div class="row"><button class="btn" data-a="chk">Проверить</button><button class="btn ghost" data-a="show">Показать верные</button><span class="tag" hidden></span></div>';
+  root.addEventListener('click', e => {
+    const a = e.target.dataset.a; if (!a) return;
+    let good = 0, empty = 0;
+    rows.forEach((r, i) => {
+      const tr = root.querySelector('tr[data-i="' + i + '"]'), sel = tr.querySelector('select'), td = tr.children[1];
+      if (a === 'show') sel.value = r.ok;
+      td.className = sel.value === '' ? '' : sel.value === r.ok ? 'ok' : 'bad';
+      td.querySelector('.mark').textContent = sel.value === '' ? '' : sel.value === r.ok ? '✓' : '✕ факт ' + r.f;
+      if (sel.value === '') empty++;
+      if (sel.value === r.ok) good++;
+    });
+    const t = root.querySelector('.row .tag'); t.hidden = false; t.className = 'tag ' + (good === rows.length ? 'ok' : ''); t.textContent = 'Верно ' + good + ' из ' + rows.length + (empty ? ', пустых ' + empty : '');
+  });
+}
+
+/* ===== 5. Сортируемая и фильтруемая таблица ===== */
+function mountP5(root) {
+  const data = [
+    { n: 'Вес самца (минимум по тексту)', v: 1500, u: 'кг' }, { n: 'Вес самки', v: 850, u: 'кг', d: '800–900' },
+    { n: 'Вес сердца', v: 10, u: 'кг' }, { n: 'Рост взрослой особи', v: 4.5, u: 'м' },
+    { n: 'Рост отдельных самцов', v: 6, u: 'м' }, { n: 'Длина шеи (почти)', v: 2, u: 'м' },
+    { n: 'Скорость бега', v: 55, u: 'км/ч' }, { n: 'Срок жизни', v: 25, u: 'лет' },
+    { n: 'Возраст общего предка', v: 50, u: 'млн лет' }, { n: 'Давление в скафандре NASA', v: 400, u: 'мм рт. ст.' }
+  ];
+  let key = 'v', dir = -1, unit = 'все';
+  const units = ['все', ...new Set(data.map(d => d.u))];
+  function table() {
+    const rows = data.filter(d => unit === 'все' || d.u === unit).sort((x, y) => (typeof x[key] === 'string' ? x[key].localeCompare(y[key], 'ru') : x[key] - y[key]) * dir);
+    const max = Math.max(...rows.map(d => d.v));
+    const th = (k, t) => '<th aria-sort="' + (key === k ? (dir > 0 ? 'ascending' : 'descending') : 'none') + '"><button class="sortb" data-k="' + k + '">' + t + '<i>' + (key === k ? (dir > 0 ? '▲' : '▼') : '↕') + '</i></button></th>';
+    return '<div class="tw"><table class="t"><thead><tr>' + th('n', 'Показатель') + th('v', 'Значение') + th('u', 'Единицы') + '</tr></thead><tbody>' +
+      rows.map(d => '<tr><td>' + d.n + '</td><td class="barcell"><div class="wrap"><span class="dbar" data-w="' + (unit === 'все' ? 0 : Math.max(5, d.v / max * 100)) + '"></span><b>' + (d.d || fmt(d.v)) + '</b></div></td><td>' + d.u + '</td></tr>').join('') + '</tbody></table></div>';
+  }
+  function render() {
+    root.querySelector('.tb').innerHTML = '<div class="filters"><span class="lbl">Единицы:</span>' + units.map(u => '<button class="pill" data-u="' + u + '" aria-pressed="' + (u === unit) + '">' + u + '</button>').join('') + '</div>' + table() +
+      (unit === 'все' ? '<p class="hint">Выбери единицы: у значений появятся столбики для сравнения.</p>' : '');
+    later(() => root.querySelectorAll('.dbar').forEach(b => { b.style.width = b.dataset.w + '%'; }));
+  }
+  root.innerHTML = '<div class="tb"></div><div class="qs"><div class="qa" data-q="1"><b>1.</b> Среди показателей в <b>кг</b>: какой самый большой?<div class="opts">' +
+    ['Вес самца', 'Вес самки', 'Вес сердца'].map(x => '<label class="opt"><input type="radio" name="q1" value="' + x + '"><span>' + x + '</span></label>').join('') + '</div></div>' +
+    '<div class="qa" data-q="2"><b>2.</b> Сколько показателей измеряется в <b>метрах</b>? <label class="numin"><input type="number" id="q2" inputmode="numeric" style="width:50px" aria-label="Количество"></label></div>' +
+    '<div><button class="btn" data-a="chk">Проверить</button></div><p class="note" role="status"></p></div>';
+  root.addEventListener('click', e => {
+    const th = e.target.closest('.sortb');
+    if (th) { dir = key === th.dataset.k ? -dir : 1; key = th.dataset.k; render(); return; }
+    const u = e.target.closest('[data-u]');
+    if (u) { unit = u.dataset.u; render(); return; }
+    if (e.target.dataset.a === 'chk') {
+      const q1 = root.querySelector('input[name=q1]:checked'), q2 = root.querySelector('#q2').value;
+      const A = root.querySelector('[data-q="1"]'), B = root.querySelector('[data-q="2"]');
+      const ok1 = q1 && q1.value === 'Вес самца', ok2 = +q2 === 3 && q2 !== '';
+      A.className = 'qa ' + (ok1 ? 'ok' : 'bad'); B.className = 'qa ' + (ok2 ? 'ok' : 'bad');
+      warn(root, (ok1 ? '' : 'Вопрос 1: в кг самый большой показатель — вес самца. ') + (ok2 ? '' : 'Вопрос 2: в метрах измеряются рост, рост самцов и длина шеи, то есть три показателя.'));
+      if (ok1 && ok2) { const n = root.querySelector('.note'); n.style.color = 'var(--ok)'; n.textContent = 'Оба ответа верны.'; } else root.querySelector('.note').style.color = '';
+    }
+  });
+  render();
+}
+
+/* ===== 6. Ранжирование до/после ===== */
+function mountP6(root) {
+  const items = [
+    { t: 'Вес сердца жирафа', v: 10, txt: '10 кг' }, { t: 'Вес самки жирафа', v: 850, txt: '800–900 кг' }, { t: 'Вес самца жирафа', v: 1500, txt: 'больше 1500 кг' }
+  ];
+  const right = [0, 1, 2];
+  let order = shuffle(right); while (order.join() === right.join()) order = shuffle(right);
+  let stage = 0, b = [], a = [];
+  const list = () => '<p class="lead">Расставь по возрастанию массы: сверху самое лёгкое.</p><ol class="rank">' + order.map((id, p) =>
+    '<li data-id="' + id + '"><span class="pos">' + (p + 1) + '</span><span class="lbl">' + items[id].t + '</span><span class="mv">' +
+    '<button class="ib" data-up="' + p + '" aria-label="Выше"' + (p === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-dn="' + p + '" aria-label="Ниже"' + (p === order.length - 1 ? ' disabled' : '') + '>↓</button></span></li>').join('') + '</ol>';
+  const col = (title, arr, cls, ref) => '<div class="colx ' + cls + '"><h4>' + title + '</h4><ol>' + arr.map((id, p) => '<li class="' + (ref ? (id === right[p] ? 'hit' : 'miss') : '') + '"><span class="pos">' + (p + 1) + '</span><span>' + items[id].t + (cls === 'ref' ? '<div class="wbar" style="width:' + Math.max(1.5, items[id].v / 1500 * 100) + '%"></div><small>' + items[id].txt + '</small>' : '') + '</span></li>').join('') + '</ol></div>';
+  function render() {
+    let h = stepper(stage);
+    if (stage === 0 || stage === 2) h += list() + '<div class="row"><button class="btn" data-a="' + (stage === 0 ? 'lock' : 'check') + '">' + (stage === 0 ? 'Зафиксировать порядок' : 'Сверить') + '</button></div>';
+    if (stage === 2) h += '<p class="hint">Твой порядок до чтения: ' + b.map(id => items[id].t.replace('Вес ', '').replace(' жирафа', '')).join(' → ') + '</p>';
+    if (stage === 1) h += quote('4, 6, 7', 'Сердце — <mark>10 кг</mark>. Самка весит <mark>800–900 кг</mark>. У самцов вес может перевалить за <mark>полторы тонны</mark>.') + '<div class="row"><button class="btn" data-a="read">Продолжить</button></div>';
+    if (stage === 3) h += '<div class="cols3">' + col('Было', b, '', true) + col('Стало', a, '', true) + col('По тексту', right, 'ref') + '</div>' +
+      '<div class="sumbox"><div><span class="tag ' + (b.join() === right.join() ? 'ok' : 'bad') + '">до чтения</span> <span class="tag ' + (a.join() === right.join() ? 'ok' : 'bad') + '">после чтения</span><small>зелёный номер — предмет стоял на своём месте</small></div></div><div class="row"><button class="btn ghost" data-a="again">Заново</button></div>';
+    root.innerHTML = h;
+  }
+  function move(p, q) {
+    const first = new Map([...root.querySelectorAll('.rank li')].map(li => [li.dataset.id, li.getBoundingClientRect().top]));
+    [order[p], order[q]] = [order[q], order[p]]; render();
+    root.querySelectorAll('.rank li').forEach(li => {
+      const d = first.get(li.dataset.id) - li.getBoundingClientRect().top;
+      if (d && !calm) { li.style.transition = 'none'; li.style.transform = 'translateY(' + d + 'px)'; li.getBoundingClientRect(); li.style.transition = 'transform .3s cubic-bezier(.2,.8,.2,1)'; li.style.transform = ''; }
+    });
+    const f = root.querySelector('li:nth-child(' + (q + 1) + ') .ib:not(:disabled)'); if (f) f.focus({ preventScroll: true });
+  }
+  root.addEventListener('click', e => {
+    const bt = e.target.closest('button'); if (!bt) return;
+    const d = bt.dataset;
+    if (d.up !== undefined) return move(+d.up, +d.up - 1);
+    if (d.dn !== undefined) return move(+d.dn, +d.dn + 1);
+    if (d.a === 'lock') { b = [...order]; stage = 1; }
+    else if (d.a === 'read') stage = 2;
+    else if (d.a === 'check') { a = [...order]; stage = 3; }
+    else if (d.a === 'again') { order = shuffle(right); stage = 0; }
+    else return;
+    render();
+  });
+  render();
+}
+
+/* ===== 7. Миф/факт + уровень уверенности ===== */
+function mountP7(root) {
+  const qs = [
+    { t: 'Вес сердца жирафа около 10 кг.', ok: true, why: 'Это факт 4.', f: 'факт 4' },
+    { t: 'Жираф не может бегать быстрее 20 км/ч.', ok: false, why: 'Жирафы бегут до 55 км/ч (факт 5).', f: 'факт 5' },
+    { t: 'Из кожи жирафа делают щиты.', ok: true, why: 'Масаи делают щиты из прочной кожи (факт 8).', f: 'факт 8' },
+    { t: 'Любимое лакомство жирафов — трава.', ok: false, why: 'Любимое лакомство — листья акации (факт 10).', f: 'факт 10' },
+    { t: 'Самки жирафов тяжелее самцов.', ok: false, why: 'Самцы значительно крупнее самок (факты 2 и 7).', f: 'факты 2 и 7' },
+    { t: 'Хищники охотятся в основном на взрослых здоровых жирафов.', ok: false, why: 'Они предпочитают молодых, старых или больных (факт 3).', f: 'факт 3' }
+  ];
+  const labels = ['', 'низкая', 'средняя', 'высокая'];
+  const hints = ['', 'скорее угадываю', 'думаю, что так', 'точно знаю'];
+  let i = 0, ans = [];
+  const dots = () => '<div class="dots">' + qs.map((q, k) => '<i class="' + (k === i ? 'cur ' : '') + (ans[k] && ans[k].c ? (ans[k].ok ? 'ok' : 'bad') : '') + '"></i>').join('') + '</div>';
+  function render() {
+    if (i >= qs.length) {
+      const right = ans.filter(x => x.ok).length, sure = ans.map((x, k) => ({ x, k })).filter(o => !o.x.ok && o.x.c === 3);
+      root.innerHTML = '<div class="sumbox"><div><span class="n">' + right + ' из ' + qs.length + '</span><small>ответов верно</small></div></div>' +
+        '<p class="lead" style="margin-top:18px">Уверенность и точность ответов</p><div class="calib">' +
+        [1, 2, 3].map(c => { const g = ans.filter(x => x.c === c), r = g.filter(x => x.ok).length; return '<div class="r"><span>' + labels[c] + '</span><div class="trk"><div class="fill" data-w="' + (g.length ? r / g.length * 100 : 0) + '"></div></div><span>' + (g.length ? r + ' из ' + g.length : 'не было') + '</span></div>'; }).join('') + '</div>' +
+        '<p class="hint">Полоска показывает долю верных ответов. Чем выше уверенность, тем длиннее она должна быть.</p>' +
+        (sure.length ? '<div class="quote"><b>Перечитай: ошибки при высокой уверенности</b>' + sure.map(o => '<span>' + qs[o.k].t + ' → ' + qs[o.k].why + '</span>').join('') + '</div>' : '<p><span class="tag ok">Уверенных ошибок нет</span></p>') +
+        '<div class="row"><button class="btn ghost" data-a="again">Заново</button></div>';
+      later(() => root.querySelectorAll('.fill').forEach(f => { f.style.width = f.dataset.w + '%'; }));
+      return;
+    }
+    const cur = qs[i], st = ans[i] || {};
+    let h = dots() + '<p class="claim">' + cur.t + '</p>';
+    if (st.pick === undefined) h += '<div class="duo"><button class="big t" data-p="1">Факт<small>соответствует тексту</small></button><button class="big f" data-p="0">Миф<small>не соответствует тексту</small></button></div>';
+    else if (st.c === undefined) h += '<p class="lead">Твой ответ: <b>' + (st.pick ? 'Факт' : 'Миф') + '</b>. Насколько уверен в ответе?</p><div class="bets">' +
+      [1, 2, 3].map(c => '<button class="bet" data-c="' + c + '"><b>' + labels[c] + '</b><small>' + hints[c] + '</small></button>').join('') + '</div>';
+    else {
+      const sureWrong = !st.ok && st.c === 3, doubtRight = st.ok && st.c === 1;
+      h += '<div class="verdict rise ' + (st.ok ? 'ok' : 'bad') + '"><div class="ic"><span>' + (st.ok ? '✓' : '✕') + '</span></div><p><b>' + (st.ok ? 'Верно.' : 'Неверно.') + '</b> ' + cur.why + '</p></div>' +
+        (sureWrong ? '<p class="soft">Ответ был дан с высокой уверенностью, но неверно. По тексту это ' + (cur.ok ? 'факт' : 'миф') + '. Стоит перечитать: ' + cur.f + '.</p>' : '') +
+        (doubtRight ? '<p class="soft">Ответ верный, хотя уверенность была низкой.</p>' : '') +
+        '<div class="row"><button class="btn" data-a="next">' + (i === qs.length - 1 ? 'Итоги' : 'Дальше') + '</button></div>';
+    }
+    root.innerHTML = h;
+  }
+  root.addEventListener('click', e => {
+    const bt = e.target.closest('button'); if (!bt) return;
+    const d = bt.dataset;
+    if (d.p !== undefined) ans[i] = { pick: d.p === '1', ok: (d.p === '1') === qs[i].ok };
+    else if (d.c) ans[i].c = +d.c;
+    else if (d.a === 'next') i++;
+    else if (d.a === 'again') { i = 0; ans = []; }
+    else return;
+    render();
+  });
+  render();
+}
+
+/* ===== Узор жирафа: мозаика пятен (используется на иллюстрации и в шапке) ===== */
+const rng = s => () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
+const mosaic = (x0, y0, w, h, cell, seed, k) => {
+  const r = rng(seed), cols = Math.ceil(w / cell) + 1, rows = Math.ceil(h / cell) + 1, P = [], out = [];
+  for (let j = 0; j <= rows; j++) { P[j] = []; for (let i = 0; i <= cols; i++) P[j][i] = [x0 + i * cell + (r() - .5) * cell * .7, y0 + j * cell + (r() - .5) * cell * .7]; }
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const q = [P[j][i], P[j][i + 1], P[j + 1][i + 1], P[j + 1][i]];
+    const cx = q.reduce((s, p) => s + p[0], 0) / 4, cy = q.reduce((s, p) => s + p[1], 0) / 4;
+    out.push(q.map(p => (cx + (p[0] - cx) * k).toFixed(1) + ',' + (cy + (p[1] - cy) * k).toFixed(1)).join(' '));
+  }
+  return out;
+};
+
+/* ===== Иллюстрация жирафа (используется в механиках 8 и 16) ===== */
+const giraffeArt = (id, ruler) => {
+  const sh = {
+    torso: 'M142 300C140 262 196 246 262 248C330 248 372 262 384 296C394 330 372 376 330 386C270 398 196 396 164 370C146 356 143 330 142 300Z',
+    neck: 'M326 270L388 292C410 226 430 160 446 102L398 88C380 150 350 212 326 270Z',
+    head: 'M392 96C396 70 436 58 468 68C494 76 508 92 500 108C492 124 456 130 428 122C406 116 390 110 392 96Z',
+    lf1: 'M336 372L360 372L356 508L338 508Z', lf2: 'M304 376L324 376L322 506L306 506Z',
+    lr1: 'M168 360L194 366L190 508L172 508Z', lr2: 'M204 372L226 374L224 506L208 506Z'
+  };
+  const patches = mosaic(120, 30, 420, 500, 38, 11, .74).map((p, i) => '<polygon points="' + p + '" fill="' + ['#8B5330', '#7B4A2D', '#9A6038'][i % 3] + '" stroke="' + ['#8B5330', '#7B4A2D', '#9A6038'][i % 3] + '" stroke-width="5" stroke-linejoin="round"/>').join('');
+  const ticks = [1, 2, 3, 4, 5, 6].map(m => '<line x1="62" x2="' + (m === 6 ? 84 : 76) + '" y1="' + (520 - m * 80) + '" y2="' + (520 - m * 80) + '" stroke="#0E1B3D" stroke-width="3" stroke-linecap="round"/>').join('') +
+    '<text x="90" y="' + (520 - 360 + 5) + '" font-size="13" font-weight="700" fill="#8A5606" font-family="Inter,sans-serif">4,5 м</text><text x="90" y="45" font-size="13" font-weight="700" fill="#8A5606" font-family="Inter,sans-serif">6 м</text>';
+  return (
+    '<defs>' + Object.entries(sh).map(([k, d]) => '<path id="@@-' + k + '" d="' + d + '"/>').join('') +
+    '<clipPath id="@@-nclip"><use href="#@@-neck"/></clipPath><clipPath id="@@-clip">' + ['torso', 'neck', 'lf1', 'lf2', 'lr1', 'lr2'].map(k => '<use href="#@@-' + k + '"/>').join('') + '</clipPath>' +
+    '<linearGradient id="@@-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9CDF5"/><stop offset="1" stop-color="#FBE3C4"/></linearGradient></defs>' +
+    '<rect width="640" height="560" fill="url(#@@-sky)"/><circle cx="580" cy="72" r="30" fill="#F2B33D"/>' +
+    '<path d="M0 470C90 430 170 440 260 462C360 436 470 430 640 468L640 560L0 560Z" fill="#E6B77A"/>' +
+    '<path d="M0 500C140 482 260 490 360 500C470 488 560 486 640 498L640 560L0 560Z" fill="#CF9A5A"/>' +
+    '<g fill="#3F6B5A"><path d="M585 520L580 222L592 222L598 520Z"/><path d="M588 262C560 246 538 240 520 224L526 216C546 230 568 238 590 250Z"/><ellipse cx="575" cy="206" rx="64" ry="22"/><ellipse cx="548" cy="190" rx="34" ry="13"/></g>' +
+    (ruler ? '<line x1="70" y1="520" x2="70" y2="40" stroke="#0E1B3D" stroke-width="3" stroke-linecap="round"/>' + ticks : '') +
+    '<ellipse cx="260" cy="520" rx="170" ry="11" fill="#0E1B3D" opacity=".16"/>' +
+    '<use href="#@@-lf2" fill="#D9962A"/><use href="#@@-lr2" fill="#D9962A"/>' +
+    '<path d="M144 290C118 300 106 332 112 370" fill="none" stroke="#7B4A2D" stroke-width="5" stroke-linecap="round"/><ellipse cx="112" cy="380" rx="7" ry="13" fill="#4B2C1A"/>' +
+    '<g fill="#F2B33D"><use href="#@@-torso"/><use href="#@@-neck"/><use href="#@@-lf1"/><use href="#@@-lr1"/></g>' +
+    '<g clip-path="url(#@@-clip)">' + patches + '</g>' +
+    '<g clip-path="url(#@@-nclip)"><path d="M398 90C380 150 350 212 326 270" fill="none" stroke="#4B2C1A" stroke-width="14" stroke-linecap="round" opacity=".85"/></g>' +
+    '<use href="#@@-head" fill="#F2B33D"/><ellipse cx="490" cy="108" rx="16" ry="12" fill="#F7D894"/>' +
+    '<g fill="#8B5330"><circle cx="420" cy="104" r="6"/><circle cx="440" cy="90" r="5"/><circle cx="410" cy="88" r="4"/></g>' +
+    '<path d="M404 84C390 72 380 76 378 86C384 96 398 96 404 90Z" fill="#D9962A"/>' +
+    '<g stroke="#4B2C1A" stroke-width="5" stroke-linecap="round"><line x1="420" y1="68" x2="416" y2="44"/><line x1="440" y1="64" x2="448" y2="40"/></g><g fill="#4B2C1A"><circle cx="416" cy="42" r="6"/><circle cx="448" cy="38" r="6"/></g>' +
+    '<circle cx="462" cy="86" r="4.5" fill="#0E1B3D"/><circle cx="498" cy="104" r="2.5" fill="#0E1B3D"/>' +
+    '<g fill="#3A2A20"><rect x="338" y="506" width="22" height="14" rx="4"/><rect x="304" y="504" width="20" height="14" rx="4"/><rect x="171" y="506" width="22" height="14" rx="4"/><rect x="205" y="504" width="20" height="14" rx="4"/></g>'
+  ).replace(/@@/g, id);
+};
+
+/* ===== 8. Точки на рисунке жирафа ===== */
+function mountP8(root) {
+  const hs = [
+    { id: 'oss', x: 458, y: 40, n: 'Оссиконы', no: 2, f: 'Оссиконы (рожки) на вершине головы у самцов и самок выглядят немного по-разному.', q: 'У самцов и самок выглядят немного по-разному.' },
+    { id: 'head', x: 440, y: 100, n: 'Голова', no: 1, f: 'Густая кровь защищает мозг: без неё резкое опускание или поднимание головы было бы для него смертельным.', q: 'Её мозг защищает густая кровь.' },
+    { id: 'neck', x: 388, y: 190, n: 'Шея', no: 7, f: 'Шея может достигать почти 2 метров.', q: 'Достигает почти 2 метров.' },
+    { id: 'heart', x: 324, y: 322, n: 'Сердце', no: 4, f: 'Вес сердца жирафа составляет 10 кг.', q: 'Весит 10 кг.' },
+    { id: 'skin', x: 232, y: 300, n: 'Кожа', no: 8, f: 'Кожа настолько прочна, что масаи делают из неё щиты.', q: 'Из неё масаи делают щиты.' },
+    { id: 'legs', x: 348, y: 452, n: 'Передние ноги', no: '5 и 7', f: 'Основная часть длины приходится на передние ноги и шею. Жираф бежит до 55 км/ч.', q: 'Вместе с шеей составляют основную часть длины; на них жираф бежит до 55 км/ч.' },
+    { id: 'size', x: 70, y: 96, n: 'Рост', no: 6, f: 'Рост взрослой особи порядка 4,5 м, у отдельных самцов — 6 м. Это самое высокое животное на планете.', q: 'Около 4,5 м, у отдельных самцов до 6 м.' }
+  ];
+  const svg = '<svg viewBox="0 0 640 560" role="img" aria-label="Иллюстрация жирафа с точками-подсказками">' + giraffeArt('g8', true) +
+    hs.map((h, i) => '<g class="hs" tabindex="0" role="button" aria-label="' + h.n + '" data-id="' + h.id + '"><circle class="ring" cx="' + h.x + '" cy="' + h.y + '" r="15"/><circle class="dot" cx="' + h.x + '" cy="' + h.y + '" r="15"/><text x="' + h.x + '" y="' + (h.y + 5.5) + '">' + (i + 1) + '</text></g>').join('') + '</svg>';
+  let mode = 'learn', opened = new Set(), target = null, score = 0, asked = 0, last = null;
+  const pick = () => { const pool = hs.filter(h => !last || h.id !== last); target = pool[Math.floor(Math.random() * pool.length)]; last = target.id; };
+  const meter = () => '<div class="meter" aria-hidden="true">' + hs.map(h => '<i class="' + (opened.has(h.id) ? 'on' : '') + '"></i>').join('') + '</div>';
+  function render() {
+    root.innerHTML = '<div class="modes"><button class="btn sm' + (mode === 'learn' ? '' : ' ghost') + '" data-m="learn">Исследуй</button><button class="btn sm' + (mode === 'quiz' ? '' : ' ghost') + '" data-m="quiz">Проверь себя</button></div>' +
+      '<div class="fig">' + svg + '</div><div class="info" role="status" aria-live="polite" id="info"></div>';
+    const info = root.querySelector('#info');
+    if (mode === 'learn') {
+      info.innerHTML = '<h4>Нажимай на точки</h4><p>Под каждой спрятан факт из текста.</p>' + meter();
+      hs.forEach(h => { if (opened.has(h.id)) root.querySelector('[data-id=' + h.id + ']').classList.add('done'); });
+    } else { if (!target) pick(); info.innerHTML = '<h4>Что на рисунке подходит под описание?</h4><p>' + target.q + '</p><p class="hint">Счёт: ' + score + ' из ' + asked + '</p>'; }
+  }
+  function tap(g) {
+    const h = hs.find(x => x.id === g.dataset.id), info = root.querySelector('#info');
+    if (mode === 'learn') {
+      opened.add(h.id); g.classList.add('done');
+      info.innerHTML = '<h4>' + h.n + (typeof h.no === 'string' ? ' · факты ' : ' · факт ') + h.no + '</h4><p>' + h.f + '</p>' + meter() + (opened.size === hs.length ? '<p class="hint">Всё открыто. Попробуй режим «Проверь себя».</p>' : '');
+    } else if (target) {
+      asked++; const ok = h.id === target.id; if (ok) score++;
+      g.classList.add(ok ? 'right' : 'wrong', ok ? 'x' : 'shake');
+      if (!ok) root.querySelector('[data-id=' + target.id + ']').classList.add('right');
+      info.innerHTML = '<h4>' + (ok ? 'Верно: ' : 'Это «' + h.n + '». Нужная точка: ') + target.n + '</h4><p>' + target.f + '</p><div class="row"><button class="btn sm" data-n="1">Дальше</button><span class="tag ' + (ok ? 'ok' : 'bad') + '">Счёт ' + score + ' из ' + asked + '</span></div>';
+      target = null;
+    }
+  }
+  root.addEventListener('click', e => {
+    const m = e.target.closest('[data-m]'); if (m) { mode = m.dataset.m; target = null; render(); return; }
+    if (e.target.closest('[data-n]')) { render(); return; }
+    const g = e.target.closest('.hs'); if (g) tap(g);
+  });
+  root.addEventListener('keydown', e => { const g = e.target.closest && e.target.closest('.hs'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tap(g); } });
+  render();
+}
+
+/* ===== 9. Пропуски: банк слов ===== */
+function mountP9(root) {
+  const parts = ['Жираф — самое ', 0, ' животное на планете. Рост взрослой особи — около ', 1, ' метров. Вес сердца составляет ', 2, ' кг, а любимое лакомство — листья ', 3, '.'];
+  const ans = ['высокое', '4,5', '10', 'акации'];
+  const bank = shuffle(['высокое', 'низкое', '4,5', '2', '10', '100', 'акации', 'пальмы']);
+  let fill = [null, null, null, null], sel = null, checked = false;
+  function render() {
+    root.innerHTML = '<p class="lead">Выбери слово внизу, затем нажми на пропуск. Нажатие на заполненный пропуск вернёт слово.</p><p class="para">' + parts.map(p => typeof p === 'number'
+      ? '<button class="slot ' + (fill[p] !== null ? 'fill ' : '') + (checked && fill[p] !== null ? (fill[p] === ans[p] ? 'ok' : 'bad') : '') + '" data-b="' + p + '" aria-label="Пропуск ' + (p + 1) + '">' + (fill[p] === null ? '&nbsp;' : fill[p]) + '</button>' : p).join('') + '</p>' +
+      '<div class="bank">' + bank.map(w => '<button class="chip' + (sel === w ? ' sel' : '') + (fill.includes(w) ? ' used' : '') + '" data-w="' + w + '">' + w + '</button>').join('') + '</div>' +
+      '<div class="row"><button class="btn" data-a="chk">Проверить</button><button class="btn ghost" data-a="reset">Сбросить</button>' + (checked ? '<span class="tag ' + (fill.every((f, i) => f === ans[i]) ? 'ok' : '') + '">Верно ' + fill.filter((f, i) => f === ans[i]).length + ' из 4</span>' : '') + '</div>';
+  }
+  root.addEventListener('click', e => {
+    const t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.w && !fill.includes(t.dataset.w)) sel = sel === t.dataset.w ? null : t.dataset.w;
+    else if (t.dataset.b !== undefined) { const b = +t.dataset.b; if (fill[b] !== null) fill[b] = null; else if (sel) { fill[b] = sel; sel = null; } checked = false; }
+    else if (t.dataset.a === 'chk') checked = true;
+    else if (t.dataset.a === 'reset') { fill = [null, null, null, null]; sel = null; checked = false; }
+    else return;
+    render();
+  });
+  render();
+}
+
+/* ===== 10. Выдели слова в тексте ===== */
+function mountP10(root) {
+  const text = 'Жираф — самое высокое животное на планете. Рост взрослой особи порядка 4,5 метров, у отдельных самцов — 6 метров. Вес может перевалить за полторы тонны. Самка несколько легче: вес от 800 до 900 килограммов. Шея может достигать почти 2 метров.';
+  const toks = text.split(' ').map(w => ({ w, ok: /\d/.test(w) || /^полторы/.test(w) }));
+  const total = toks.filter(t => t.ok).length;
+  root.innerHTML = '<p class="lead">Выдели в тексте все <b>числа</b>, в том числе записанные словом.</p><p class="para">' +
+    toks.map((t, i) => '<button class="w" data-i="' + i + '" aria-pressed="false">' + t.w + '</button>').join(' ') + '</p>' +
+    '<div class="row"><button class="btn" data-a="chk">Проверить</button><button class="btn ghost" data-a="reset">Сбросить</button></div><div class="tally"></div>';
+  root.addEventListener('click', e => {
+    const s = e.target.closest('button'); if (!s) return;
+    if (s.classList.contains('w')) { s.classList.remove('ok', 'bad', 'miss'); s.classList.toggle('on'); s.setAttribute('aria-pressed', s.classList.contains('on')); }
+    else if (s.dataset.a === 'chk') {
+      let hit = 0, wrong = 0, miss = 0;
+      root.querySelectorAll('.w').forEach((el, i) => {
+        const on = el.classList.contains('on'); el.classList.remove('ok', 'bad', 'miss');
+        if (on && toks[i].ok) { el.classList.add('ok'); hit++; } else if (on) { el.classList.add('bad'); wrong++; } else if (toks[i].ok) { el.classList.add('miss'); miss++; }
+      });
+      root.querySelector('.tally').innerHTML = '<span class="tag ok">найдено ' + hit + ' из ' + total + '</span>' + (wrong ? '<span class="tag bad">лишних ' + wrong + '</span>' : '') + (miss ? '<span class="tag">пропущено ' + miss + ' (пунктир)</span>' : '');
+    } else if (s.dataset.a === 'reset') { root.querySelectorAll('.w').forEach(el => { el.classList.remove('on', 'ok', 'bad', 'miss'); el.setAttribute('aria-pressed', 'false'); }); root.querySelector('.tally').innerHTML = ''; }
+  });
+}
+
+/* ===== 11. Ветвящийся сценарий ===== */
+function mountP11(root) {
+  const N = {
+    start: { t: 'Ты — лев в саванне. Рядом пасётся стадо жирафов: огромный взрослый самец, молодой жираф и старая больная самка. На кого нападёшь?', o: [['Взрослый самец', 'adult'], ['Молодой жираф', 'young'], ['Старая больная самка', 'old']] },
+    adult: { end: 'bad', h: 'Голодная ночь', t: 'Взрослый жираф огромен: рост около 4,5 м, вес может превысить полторы тонны. Для большинства хищников такая добыча недоступна. Силы потрачены впустую.', f: 'Факты 3 и 6' },
+    young: { t: 'Молодой жираф — частая цель хищников. Но он заметил тебя и бросился бежать: жираф способен развивать до 55 км/ч. Что делаешь?', o: [['Мчаться за ним вдогонку', 'chase'], ['Притаиться и подойти ближе, пока он не побежал', 'sneak']] },
+    old: { end: 'good', h: 'Сытый вечер', t: 'Старые и больные животные — любимая цель львов, леопардов и гиен. Выбор пал на добычу, за которой хищники охотятся чаще всего.', f: 'Факт 3' },
+    chase: { end: 'bad', h: 'Добыча ушла', t: 'На коротких дистанциях жираф может обогнать даже скаковую лошадь. Открытая погоня выматывает тебя, а добыча уходит.', f: 'Факт 5' },
+    sneak: { end: 'good', h: 'Тихий подход', t: 'Разумно: жираф быстрый, шансы в открытой погоне невелики. Удалось подобраться ближе, пока он не побежал.', f: 'Факты 3 и 5' }
+  };
+  const tree = { id: 'start', l: 'Выбор жертвы', k: [{ id: 'adult', l: 'Взрослый самец' }, { id: 'young', l: 'Молодой жираф', k: [{ id: 'chase', l: 'Погоня' }, { id: 'sneak', l: 'Засада' }] }, { id: 'old', l: 'Старая больная самка' }] };
+  const sil = (x, s, c) => { const b = 172; return '<g fill="' + c + '" stroke="' + c + '" stroke-linecap="round">' +
+    '<ellipse cx="' + x + '" cy="' + (b - 72 * s) + '" rx="' + 40 * s + '" ry="' + 19 * s + '" stroke="none"/>' +
+    [-26, -12, 18, 32].map(d => '<line x1="' + (x + d * s) + '" y1="' + (b - 66 * s) + '" x2="' + (x + d * s) + '" y2="' + b + '" stroke-width="' + 5 * s + '"/>').join('') +
+    '<polygon stroke="none" points="' + [x + 22 * s, b - 82 * s, x + 40 * s, b - 86 * s, x + 56 * s, b - 146 * s, x + 44 * s, b - 148 * s].join(' ') + '"/>' +
+    '<ellipse cx="' + (x + 60 * s) + '" cy="' + (b - 148 * s) + '" rx="' + 15 * s + '" ry="' + 7 * s + '" transform="rotate(-14 ' + (x + 60 * s) + ' ' + (b - 148 * s) + ')" stroke="none"/>' +
+    '<line x1="' + (x - 40 * s) + '" y1="' + (b - 80 * s) + '" x2="' + (x - 52 * s) + '" y2="' + (b - 40 * s) + '" stroke-width="' + 3 * s + '"/></g>'; };
+  const scene = '<div class="scene"><svg viewBox="0 0 600 190" role="img" aria-label="Три жирафа в саванне: взрослый самец, молодой жираф и старая самка"><circle cx="80" cy="66" r="30" fill="#F2B33D"/>' +
+    '<path d="M0 150C120 120 220 140 320 132C430 122 520 138 600 128L600 190L0 190Z" fill="#E8B472"/><rect y="172" width="600" height="18" fill="#C98E4B"/>' +
+    sil(170, 1, '#6B3F25') + sil(340, .55, '#8B5330') + sil(480, .8, '#B79373') + '</svg></div>';
+  let node = 'start', path = ['start'];
+  const li = n => '<li class="' + (path.includes(n.id) ? 'v ' + (N[n.id].end || '') : '') + '"><span>' + n.l + '</span>' + (n.k ? '<ul>' + n.k.map(li).join('') + '</ul>' : '') + '</li>';
+  function render() {
+    const n = N[node];
+    let h = (node === 'start' ? scene : '') + '<p class="story">' + (n.end ? '' : n.t) + '</p>';
+    if (n.o) h += '<div class="choices">' + n.o.map(o => '<button class="choice" data-n="' + o[1] + '">' + o[0] + '</button>').join('') + '</div>';
+    else h = '<div class="end rise ' + n.end + '"><div class="seal">' + (n.end === 'good' ? '✓' : '✕') + '</div><div><h3>' + n.h + '</h3><p>' + n.t + '</p><p class="mut">Опора на текст: ' + n.f.toLowerCase() + '.</p></div></div>' +
+      '<div class="map"><h4>Карта сценария: твой путь подсвечен</h4><ul>' + li(tree) + '</ul></div><div class="row"><button class="btn" data-a="again">Сыграть ещё</button></div>';
+    root.innerHTML = h;
+  }
+  root.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.n) { path.push(b.dataset.n); node = b.dataset.n; } else if (b.dataset.a === 'again') { node = 'start'; path = ['start']; } else return;
+    render();
+  });
+  render();
+}
+
+/* ===== 12. Гипотеза → эталон → что изменилось ===== */
+function mountP12(root) {
+  const model = 'Густая кровь защищает мозг: без неё резкое опускание или поднимание головы было бы для него смертельным.';
+  const rubric = ['Говорит, что кровь густая', 'Упоминает резкое движение головой вверх или вниз', 'Связывает это с защитой мозга'];
+  let stage = 0, mine = '', after = '', hits = 0;
+  const ta = (ph, v) => '<textarea class="ta" aria-label="' + ph + '" maxlength="400" placeholder="' + ph + '">' + (v || '') + '</textarea><div class="cnt">0 / 400</div>';
+  const box = (t, v, cls) => '<div class="paper ' + (cls || '') + '"><h4>' + t + '</h4><p>' + (v ? escapeHTML(v) : '<span class="mut">пусто</span>') + '</p></div>';
+  function render() {
+    let h = stepper(stage) + '<p class="lead">Почему у жирафа очень густая кровь? Что было бы, если бы она была обычной?</p>';
+    if (stage === 0) h += ta('Напиши свою версию. Правильного ответа пока нет.') + '<p class="note" role="status"></p><div class="row"><button class="btn" data-a="lock">Сохранить гипотезу</button></div>';
+    if (stage === 1) h += quote(1, 'Кровь жирафов очень густая. Если бы не эта особенность, резкое опускание или поднимание животным головы было бы <mark>смертельным для его мозга</mark>.') + '<div class="row"><button class="btn" data-a="read">К сравнению</button></div>';
+    if (stage === 2) h += '<div class="cols2">' + box('Моя гипотеза', mine) + box('Эталон по тексту', model, 'ref') + '</div><p class="qt" style="margin-top:18px">Что из эталона есть в твоём ответе?</p><div class="rub">' +
+      rubric.map((r, i) => '<label><input type="checkbox" data-r="' + i + '"><i>✓</i>' + r + '</label>').join('') + '</div><p class="qt" style="margin-top:18px">Что теперь хочется дополнить или изменить?</p>' + ta('Допиши, что изменилось в твоём понимании. Можно оставить пустым.') + '<div class="row"><button class="btn" data-a="done">Завершить</button></div>';
+    if (stage === 3) h += '<div class="cols2">' + box('Было', mine) + box('Стало', after || 'без изменений') + '</div><div class="sumbox"><div><span class="n"><span data-count="' + hits + '">0</span> из ' + rubric.length + '</span><small>пунктов эталона было в твоём первом ответе</small></div></div><div class="row"><button class="btn ghost" data-a="again">Заново</button></div>';
+    root.innerHTML = h;
+    const c = root.querySelector('[data-count]'); if (c) countUp(c, +c.dataset.count, 600);
+  }
+  root.addEventListener('input', e => { if (e.target.tagName === 'TEXTAREA') e.target.parentNode.querySelector('.cnt').textContent = e.target.value.length + ' / 400'; });
+  root.addEventListener('click', e => {
+    const a = e.target.dataset.a; if (!a) return;
+    if (a === 'lock') { mine = root.querySelector('textarea').value.trim(); if (!mine) { warn(root, 'Напиши хотя бы одно предположение.'); return; } stage = 1; }
+    else if (a === 'read') stage = 2;
+    else if (a === 'done') { hits = root.querySelectorAll('input[type=checkbox]:checked').length; after = root.querySelector('textarea').value.trim(); stage = 3; }
+    else if (a === 'again') { stage = 0; mine = ''; after = ''; }
+    render();
+  });
+  render();
+}
+
+/* ===== 13. 100 баллов до/после ===== */
+function mountP13(root) {
+  const opts = ['Молодые', 'Старые', 'Больные', 'Взрослые здоровые'], col = ['c1', 'c2', 'c3', 'c4'];
+  let stage = 0, b = [], a = [];
+  const stack = arr => { const rest = 100 - arr.reduce((s, v) => s + v, 0); return '<div class="stack">' + arr.map((v, i) => '<div class="' + col[i] + '" style="flex:' + v + ' 1 0" title="' + opts[i] + ': ' + v + '">' + (v >= 9 ? v : '') + '</div>').join('') + '<div style="flex:' + rest + ' 1 0"></div></div>'; };
+  const legend = () => '<div class="legend2">' + opts.map((o, i) => '<span><i style="background:var(--' + col[i].replace('c', 'c') + ')"></i>' + o + '</span>').join('') + '</div>';
+  function sliders(start) {
+    return '<div class="stackbox">' + stack(start) + '</div><div class="alloc">' + opts.map((o, i) => '<div class="a"><label><i style="background:var(--' + col[i] + ')"></i>' + o + '</label><input class="rng" type="range" min="0" max="100" value="' + start[i] + '" style="--c:var(--' + col[i] + ');--p:' + start[i] + '%" aria-label="' + o + '"><b>' + start[i] + '</b></div>').join('') + '</div>' +
+      '<p class="left"><span class="mut">Осталось распределить</span> <b class="rest">100</b></p>';
+  }
+  const vals = () => [...root.querySelectorAll('.alloc input')].map(i => +i.value);
+  function update() {
+    const v = vals(), rest = 100 - v.reduce((s, x) => s + x, 0);
+    root.querySelector('.stackbox').innerHTML = stack(v);
+    root.querySelectorAll('.alloc .a').forEach((r, i) => { r.querySelector('b').textContent = v[i]; r.querySelector('input').style.setProperty('--p', v[i] + '%'); });
+    root.querySelector('.rest').textContent = rest;
+    const go = root.querySelector('[data-a=lock],[data-a=check]'); if (go) go.disabled = rest !== 0;
+  }
+  function render() {
+    let h = stepper(stage) + '<p class="lead">Кого выбирают львы, леопарды и гиены? Распредели 100 баллов по своей убеждённости.</p>';
+    if (stage === 0) h += sliders([0, 0, 0, 0]) + '<div class="row"><button class="btn" data-a="lock" disabled>Зафиксировать</button></div>';
+    if (stage === 1) h += quote(3, 'Когда жираф достигает размеров взрослой особи, он становится <mark>недоступным для большинства хищников</mark>. Львы, леопарды и гиены предпочитают охотиться на <mark>молодых, старых или больных</mark> животных.') + '<div class="row"><button class="btn" data-a="read">Пересмотреть распределение</button></div>';
+    if (stage === 2) h += sliders(b) + '<div class="row"><button class="btn" data-a="check">Сверить</button></div>';
+    if (stage === 3) h += '<p class="bl">До чтения</p>' + stack(b) + '<p class="bl">После чтения</p>' + stack(a) + legend() +
+      '<div class="sumbox"><div><span class="n">' + b[3] + ' → ' + a[3] + '</span><small>баллов у «взрослых здоровых»: по тексту они почти недоступны хищникам</small></div></div><div class="row"><button class="btn ghost" data-a="again">Заново</button></div>';
+    root.innerHTML = h;
+    if (stage === 0 || stage === 2) update();
+  }
+  root.addEventListener('input', e => {
+    if (e.target.type !== 'range') return;
+    const rs = [...root.querySelectorAll('.alloc input')], i = rs.indexOf(e.target);
+    const others = rs.reduce((s, r, k) => k === i ? s : s + +r.value, 0);
+    if (+e.target.value > 100 - others) e.target.value = 100 - others;
+    update();
+  });
+  root.addEventListener('click', e => {
+    const x = e.target.dataset.a; if (!x) return;
+    if (x === 'lock') { b = vals(); stage = 1; } else if (x === 'read') stage = 2; else if (x === 'check') { a = vals(); stage = 3; } else if (x === 'again') stage = 0;
+    render();
+  });
+  render();
+}
+
+/* ===== 14. Шкала согласия до/после ===== */
+function mountP14(root) {
+  const cl = [
+    { t: 'Жираф — неповоротливое животное', ref: 1, f: 5 },
+    { t: 'Взрослого жирафа легко поймать хищнику', ref: 1, f: 3 },
+    { t: 'Кожа жирафа тонкая и ранимая', ref: 1, f: 8 },
+    { t: 'Жираф — самое высокое животное на Земле', ref: 5, f: 6 }
+  ];
+  let stage = 0, b = [], a = [];
+  const pos = v => (v - 1) / 4 * 100;
+  const five = (i, start, was) => '<div class="five">' + [1, 2, 3, 4, 5].map(n => '<label class="' + (was === n ? 'was' : '') + '"><input type="radio" name="c' + i + '" value="' + n + '"' + (start === n ? ' checked' : '') + ' aria-label="' + n + '">' + n + '</label>').join('') + '</div><div class="ends"><span>полное несогласие</span><span>полное согласие</span></div>';
+  const form = (start, ghost) => cl.map((c, i) => '<div class="lik"><p>' + c.t + '</p>' + five(i, start && start[i], ghost && b[i]) + (ghost ? '<p class="ghostline" style="margin-top:8px;font-weight:400">Пунктир — оценка до чтения: ' + b[i] + '</p>' : '') + '</div>').join('') + '<p class="note" role="status"></p>';
+  const read = () => cl.map((c, i) => { const r = root.querySelector('input[name=c' + i + ']:checked'); return r ? +r.value : 0; });
+  function result(c, i) {
+    const closer = Math.abs(a[i] - c.ref) < Math.abs(b[i] - c.ref), same = a[i] === b[i];
+    const lo = Math.min(pos(a[i]), pos(b[i])), w = Math.abs(pos(a[i]) - pos(b[i]));
+    return '<div class="lik"><p>' + c.t + '</p><div class="dumb"><div class="ln"></div>' + [1, 2, 3, 4, 5].map(n => '<span class="tk" style="left:' + pos(n) + '%">' + n + '</span>').join('') +
+      '<span class="mv ' + (same ? 'same' : closer ? 'ok' : 'bad') + '" data-w="' + w + '" style="left:' + lo + '%;width:0"></span>' +
+      '<span class="pin f" style="top:24px;left:' + pos(c.ref) + '%"></span><span class="pin b" style="left:' + pos(b[i]) + '%"></span><span class="pin a" data-to="' + pos(a[i]) + '" style="left:' + pos(b[i]) + '%"></span></div>' +
+      '<div class="legend"><span><i class="lb"></i>До: <b>' + b[i] + '</b></span><span><i class="la"></i>После: <b>' + a[i] + '</b></span><span><i class="lf"></i>По тексту: <b>' + c.ref + '</b> (факт ' + c.f + ')</span></div>' +
+      (same ? '<span class="tag">без изменений</span>' : closer ? '<span class="tag ok">ближе к тексту</span>' : '<span class="tag bad">дальше от текста</span>') + '</div>';
+  }
+  function render() {
+    let h = stepper(stage);
+    if (stage === 0) h += '<p class="lead">Оцени степень согласия с каждым утверждением.</p>' + form() + '<div class="row"><button class="btn" data-a="lock">Сохранить оценки</button></div>';
+    if (stage === 1) h += quote(5, 'Хотя жирафы и кажутся слегка нескладными, они хорошие бегуны.') + quote(3, 'Взрослый жираф становится недоступным для большинства хищников.') + quote(8, 'Кожа настолько прочна, что масаи делают из неё щиты.') + quote(6, 'Жираф — самое высокое животное на планете.') + '<div class="row"><button class="btn" data-a="read">Продолжить</button></div>';
+    if (stage === 2) h += '<p class="lead">Изменились ли оценки после чтения?</p>' + form(b, true) + '<div class="row"><button class="btn" data-a="check">Сверить</button></div>';
+    if (stage === 3) h += cl.map(result).join('') + '<div class="row"><button class="btn ghost" data-a="again">Заново</button></div>';
+    root.innerHTML = h;
+    root.querySelectorAll('.pin.a').forEach(p => later(() => { p.style.left = p.dataset.to + '%'; }));
+    root.querySelectorAll('.mv').forEach(m => later(() => { m.style.width = m.dataset.w + '%'; }));
+  }
+  root.addEventListener('click', e => {
+    const x = e.target.dataset.a; if (!x) return;
+    if (x === 'lock' || x === 'check') { const v = read(); if (v.includes(0)) return warn(root, 'Оцени все утверждения, чтобы продолжить.'); if (x === 'lock') b = v; else a = v; stage = x === 'lock' ? 1 : 3; }
+    else if (x === 'read') stage = 2; else if (x === 'again') stage = 0;
+    render();
+  });
+  render();
+}
+
+/* ===== 15. Медленное раскрытие графика ===== */
+function mountP15(root) {
+  const bars = [
+    { n: 'Вес самки', v: 850, txt: '800–900 кг', f: 7 },
+    { n: 'Вес самца', v: 1500, txt: 'больше 1500 кг', f: 6 },
+    { n: 'Вес сердца', v: 10, txt: '10 кг', f: 4 }
+  ];
+  const MAX = 2000, pct = v => v / MAX * 100;
+  const axis = '<div class="axis">' + [0, 500, 1000, 1500, 2000].map(t => '<span>' + t + ' кг</span>').join('') + '</div>';
+  let i = 1, phase = 'guess', guess = [];
+  const factor = k => { const g = Math.max(guess[k], 1), f = bars[k].v; return Math.max(g / f, f / g); };
+  const raz = x => { const r = Math.round(x * 10) / 10, n = Math.round(r); return fmt(r) + (r === n && (n % 10 === 0 || n % 10 >= 5 || (n % 100 >= 11 && n % 100 <= 14)) ? ' раз' : ' раза'); };
+  const verdict = k => { const x = factor(k); return x <= 1.3 ? '<span class="tag ok">почти точно</span>' : '<span class="tag bad">мимо в ' + raz(x) + '</span>'; };
+  const row = (b, k) => {
+    const open = k === 0 || k < i || (k === i && (phase === 'shown' || phase === 'done')) || phase === 'done';
+    if (open) return '<div class="crow"><span class="cl">' + b.n + '</span><div class="ct"><div class="cb" data-w="' + pct(b.v) + '"></div>' + (guess[k] !== undefined ? '<i class="cg" style="left:' + pct(guess[k]) + '%"></i>' : '') + '</div><span class="cv">' + b.txt + '</span></div>';
+    return '<div class="crow"><span class="cl">' + b.n + '</span><div class="ct"><div class="cb pend" style="width:' + pct(1000) + '%"></div></div><span class="cv" data-live>1000 кг</span></div>';
+  };
+  function render() {
+    const upto = phase === 'done' ? bars.length : i + 1;
+    let h = '<div class="chart">' + bars.slice(0, upto).map(row).join('') + axis + '</div>';
+    if (phase === 'guess') h += '<div class="pick"><p class="qt">Столбец «' + bars[i].n + '» пока скрыт. Каким он будет?' + (i === 1 ? ' <span class="mut">Первый столбец открыт как ориентир.</span>' : '') + '</p><div class="readout"><output>1000</output><span>кг</span></div>' +
+      '<input class="rng" type="range" min="10" max="' + MAX + '" step="10" value="1000" style="--p:50%" aria-label="Прогноз: ' + bars[i].n + '"><div class="row"><button class="btn" data-a="show">Показать столбец</button></div></div>';
+    if (phase === 'shown') h += '<div class="sumbox"><div>' + verdict(i) + '<small>твой прогноз — ' + guess[i] + ' кг, в тексте: ' + bars[i].txt + ' (факт ' + bars[i].f + ')</small></div></div><div class="row"><button class="btn" data-a="next">' + (i === bars.length - 1 ? 'Итог' : 'Следующий столбец') + '</button></div>';
+    if (phase === 'done') h += '<div class="sumbox"><div><span class="n">' + Math.round(bars[1].v / bars[2].v) + '×</span><small>во столько раз сердце легче самца: по тексту 10 кг против 1500 с лишним</small></div></div>' +
+      '<p class="hint">Метка «ты» показывает твой прогноз для каждого столбца.</p><div class="row"><button class="btn ghost" data-a="again">Заново</button></div>';
+    root.innerHTML = h;
+    later(() => root.querySelectorAll('.cb[data-w]').forEach(b => { b.style.width = b.dataset.w + '%'; }));
+  }
+  root.addEventListener('input', e => {
+    if (e.target.type !== 'range') return;
+    const v = +e.target.value;
+    e.target.style.setProperty('--p', v / MAX * 100 + '%');
+    e.target.parentNode.querySelector('output').textContent = v;
+    root.querySelector('.cb.pend').style.width = pct(v) + '%';
+    root.querySelector('[data-live]').textContent = v + ' кг';
+  });
+  root.addEventListener('click', e => {
+    const a = e.target.dataset.a; if (!a) return;
+    if (a === 'show') { guess[i] = +root.querySelector('.rng').value; phase = 'shown'; }
+    else if (a === 'next') { if (i === bars.length - 1) phase = 'done'; else { i++; phase = 'guess'; } }
+    else if (a === 'again') { i = 1; phase = 'guess'; guess = []; }
+    render();
+  });
+  render();
+}
+
+/* ===== 16. Постепенное раскрытие картинки ===== */
+function mountP16(root) {
+  const opts = shuffle(['Жираф', 'Зебра', 'Страус', 'Верблюд']);
+  const tiles = mosaic(-30, -30, 700, 620, 74, 21, 1.06);
+  const centers = tiles.map(p => { const q = p.split(' ').map(s => s.split(',').map(Number)); return [q.reduce((s, c) => s + c[0], 0) / 4, q.reduce((s, c) => s + c[1], 0) / 4]; });
+  const inside = [], outside = [];
+  centers.forEach((c, k) => (c[0] > 100 && c[0] < 530 && c[1] > 30 && c[1] < 540 ? inside : outside).push(k));
+  const order = shuffle(inside).concat(shuffle(outside));
+  const PARTS = 4, batch = Math.ceil(order.length / PARTS);
+  let opened = 1, wrong = new Set(), done = false, hit = 0, note = '';
+  const art = '<svg viewBox="0 0 640 560" role="img" aria-label="Закрытая картинка: проявляется по кускам">' + giraffeArt('g16', false) +
+    '<g>' + tiles.map((p, k) => '<polygon class="tile" data-k="' + k + '" points="' + p + '" fill="' + ['#2F6BFF', '#4B82FF', '#2358DE'][k % 3] + '" stroke="' + ['#2F6BFF', '#4B82FF', '#2358DE'][k % 3] + '" stroke-width="2"/>').join('') + '</g></svg>';
+  const openSet = n => new Set(order.slice(0, batch * n));
+  function render(prev) {
+    const was = openSet(prev === undefined ? opened : prev);
+    let h = '<div class="fig">' + art + '</div>';
+    if (!done) h += '<p class="lead" style="margin-top:14px">Что за животное? Раскрытие изображения: этап <b>' + opened + '</b> из ' + PARTS + '. Чем раньше угадаешь, тем лучше.</p><div class="guess">' +
+      opts.map(o => '<button class="chip' + (wrong.has(o) ? ' wrongo' : '') + '" data-o="' + o + '">' + o + '</button>').join('') + '</div><div class="row"><button class="btn ghost" data-a="more"' + (opened >= PARTS ? ' disabled' : '') + '>Открыть ещё часть</button></div>';
+    else {
+      h += '<div class="info rise"><h4>' + (hit ? 'Это жираф. Верный ответ на этапе ' + hit + ' из ' + PARTS : 'Это жираф') + '</h4><p>Что ты уже знаешь о жирафах? Напиши одну-две вещи до чтения текста.</p></div>';
+      h += note ? '<blockquote class="quote" style="margin-top:12px"><b>Твои предположения до чтения</b><span>' + escapeHTML(note) + '</span></blockquote><p class="hint">После текста вернись к ним: что подтвердилось?</p><div class="row"><button class="btn ghost" data-a="again">Заново</button></div>'
+        : '<textarea class="ta" maxlength="300" aria-label="Предположение до чтения текста" style="margin-top:12px" placeholder="Например: шея очень длинная…"></textarea><div class="row"><button class="btn" data-a="save">Сохранить предположение</button></div>';
+    }
+    root.innerHTML = h;
+    root.querySelectorAll('.tile').forEach(t => t.classList.toggle('off', was.has(+t.dataset.k)));
+    later(() => { const now = openSet(opened); root.querySelectorAll('.tile').forEach(t => t.classList.toggle('off', now.has(+t.dataset.k))); });
+  }
+  root.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const prev = opened;
+    if (b.dataset.o) {
+      if (b.dataset.o === 'Жираф') { hit = opened; done = true; opened = PARTS; }
+      else { wrong.add(b.dataset.o); if (opened < PARTS) opened++; else { done = true; } }
+    } else if (b.dataset.a === 'more') { if (opened < PARTS) opened++; }
+    else if (b.dataset.a === 'save') { note = root.querySelector('textarea').value.trim() || 'без записи'; }
+    else if (b.dataset.a === 'again') { opened = 1; wrong = new Set(); done = false; hit = 0; note = ''; render(1); return; }
+    else return;
+    render(prev);
+  });
+  render();
+}
+
+/* ===== 17. Матрица 2×2 ===== */
+function mountP17(root) {
+  const facts = [
+    [1, 'Густая кровь защищает мозг'], [2, 'Парнокопытное, предок из эоцена'], [3, 'Взрослый недоступен большинству хищников'],
+    [4, 'Сердце весит 10 кг'], [5, 'Бежит до 55 км/ч'], [6, 'Рост 4,5 м, у самцов до 6 м'], [7, 'Самка 800–900 кг, шея почти 2 м'],
+    [8, 'Из кожи делают щиты'], [9, 'Скафандр NASA и 400 мм рт. ст.'], [10, 'Любит листья акации'], [11, 'Живёт в среднем 25 лет']
+  ];
+  let placed = {}, sel = null, summary = false;
+  const quad = p => (p.x < .5 ? 'l' : 'r') + (p.y < .5 ? 't' : 'b');
+  const names = { rt: 'Удивило и важно для выживания', lt: 'Ожидал, и это важно', rb: 'Удивило, но это просто любопытно', lb: 'Ожидал, ничего нового' };
+  function render() {
+    const n = Object.keys(placed).length;
+    let h = '<p class="lead">Выбери факт в списке, затем нажми на поле, чтобы поставить его. Правильного расположения нет: это твоя оценка.</p><div class="mx"><div><div class="board" id="board">' +
+      '<div class="bx"></div><div class="by"></div><div class="quad tl">Ожидал, и это важно</div><div class="quad tr">Удивило и важно для выживания</div><div class="quad bl">Ожидал, ничего нового</div><div class="quad br">Удивило, но это просто любопытно</div>' +
+      Object.entries(placed).map(([id, p]) => '<button class="pin2" data-pin="' + id + '" style="left:' + p.x * 100 + '%;top:' + p.y * 100 + '%" aria-label="Факт ' + id + ': переставить">' + id + '</button>').join('') + '</div>' +
+      '<p class="hint">Горизонталь: ожидал → удивило. Вертикаль: важно для выживания (вверху) → просто любопытно (внизу).</p>' +
+      (sel !== null ? '<div class="placers" aria-label="Размещение выбранного факта"><p class="hint">Размести факт ' + sel + ' нажатием на поле или выбери область:</p>' +
+        '<button class="btn ghost sm" data-place="lt">Ожидал · важно</button><button class="btn ghost sm" data-place="rt">Удивило · важно</button>' +
+        '<button class="btn ghost sm" data-place="lb">Ожидал · любопытно</button><button class="btn ghost sm" data-place="rb">Удивило · любопытно</button></div>' : '') + '</div>' +
+      '<div class="fcards">' + facts.map(f => '<button class="fcard' + (sel === f[0] ? ' sel' : '') + (placed[f[0]] ? ' placed' : '') + '" data-f="' + f[0] + '"><b>' + f[0] + '</b><span>' + f[1] + '</span></button>').join('') + '</div></div>' +
+      '<div class="row"><span class="tag">Размещено ' + n + ' из ' + facts.length + '</span><button class="btn" data-a="sum"' + (n ? '' : ' disabled') + '>Показать итог</button></div>';
+    if (summary) {
+      const g = {}; Object.entries(placed).forEach(([id, p]) => (g[quad(p)] = g[quad(p)] || []).push(+id));
+      h += '<ul class="qlist" style="padding:0">' + ['rt', 'lt', 'rb', 'lb'].map(q => '<li><b>' + names[q] + ':</b> ' + (g[q] ? g[q].sort((a, b) => a - b).map(id => 'факт ' + id).join(', ') : '<span class="mut">пусто</span>') + '</li>').join('') + '</ul>';
+    }
+    root.innerHTML = h;
+  }
+  root.addEventListener('click', e => {
+    const pin = e.target.closest('[data-pin]'), card = e.target.closest('[data-f]'), place = e.target.closest('[data-place]'), a = e.target.dataset.a;
+    if (pin) { sel = +pin.dataset.pin; delete placed[sel]; summary = false; }
+    else if (card) { sel = sel === +card.dataset.f ? null : +card.dataset.f; if (sel && placed[sel]) { delete placed[sel]; summary = false; } }
+    else if (place && sel !== null) { const xy = { lt: [.25,.25], rt: [.75,.25], lb: [.25,.75], rb: [.75,.75] }[place.dataset.place]; placed[sel] = {x:xy[0], y:xy[1]}; sel = null; summary = false; }
+    else if (a === 'sum') summary = true;
+    else if (e.target.closest('#board') && sel) {
+      const r = root.querySelector('#board').getBoundingClientRect();
+      placed[sel] = { x: Math.min(.96, Math.max(.04, (e.clientX - r.left) / r.width)), y: Math.min(.96, Math.max(.04, (e.clientY - r.top) / r.height)) };
+      sel = null; summary = false;
+    } else return;
+    render();
+    if (card && sel !== null) root.querySelector('.placers button')?.focus({ preventScroll:true });
+    else if (place) root.querySelector('.fcard:not(.placed)')?.focus({ preventScroll:true });
+  });
+  render();
+}
+
+/* ===== 18. Шаг-замок ===== */
+function mountP18(root) {
+  const qs = [
+    { q: 'Сколько килограммов весит сердце жирафа?', code: '10', ok: v => v === 10, f: 4 },
+    { q: 'Сколько лет в среднем живёт жираф в привычной среде?', code: '25', ok: v => v === 25, f: 11 },
+    { q: 'Каков рост взрослой особи в метрах? В код идёт число без запятой.', code: '45', ok: v => v === 4.5, f: 6 }
+  ];
+  let solved = [false, false, false];
+  const spin = (el, final) => {
+    if (calm) { el.textContent = final; return; }
+    let t = 0; const iv = setInterval(() => { el.textContent = String(10 + Math.floor(Math.random() * 90)); if (++t > 12) { clearInterval(iv); el.textContent = final; } }, 50);
+  };
+  function render(anim) {
+    const open = solved.every(Boolean);
+    root.innerHTML = '<div class="lock' + (open && !anim ? ' open' : '') + '"><div class="shackle"></div><div class="lbody"><div class="dials">' +
+      qs.map((q, k) => '<div class="dial' + (solved[k] ? ' on' : '') + '" data-d="' + k + '">' + (solved[k] ? q.code : '··') + '</div>').join('') + '</div></div></div>' +
+      '<p class="lead" style="text-align:center">Найди ответы в тексте о жирафах: они собираются в код замка.</p><div class="lq">' +
+      qs.map((q, k) => '<div class="lrow' + (solved[k] ? ' ok' : '') + '" data-k="' + k + '"><p class="qt">' + q.q + '</p>' +
+        '<label class="numin"><input type="text" inputmode="decimal" autocomplete="off" aria-label="Ответ ' + (k + 1) + '"' + (solved[k] ? ' disabled value="' + (k === 2 ? '4,5' : q.code) + '"' : '') + '></label>' +
+        '<button class="btn sm" data-a="chk"' + (solved[k] ? ' disabled' : '') + '>Проверить</button><p class="tiny" role="status"></p></div>').join('') + '</div>' +
+      (open ? '<div class="unlock rise"><blockquote class="quote"><b>Замок открыт: бонусный факт 10</b><span>Любимый деликатес жирафов — листья акации.</span></blockquote><div class="row"><a class="btn nextlink" href="#p19">Перейти к следующему шагу</a><button class="btn ghost" data-a="again">Закрыть замок заново</button></div></div>' : '');
+  }
+  root.addEventListener('click', e => {
+    const a = e.target.dataset.a; if (!a) return;
+    if (a === 'again') { solved = [false, false, false]; render(); return; }
+    if (a !== 'chk') return;
+    const rowEl = e.target.closest('.lrow'), k = +rowEl.dataset.k, tiny = rowEl.querySelector('.tiny');
+    const v = parseNumber(rowEl.querySelector('input').value);
+    if (qs[k].ok(v)) {
+      rowEl.classList.remove('bad');
+      solved[k] = true;
+      if (solved.every(Boolean)) { render(true); later(() => root.querySelector('.lock').classList.add('open')); return; }
+      rowEl.classList.add('ok'); rowEl.querySelector('input').disabled = true; e.target.disabled = true; tiny.textContent = '';
+      const d = root.querySelector('[data-d="' + k + '"]'); d.classList.add('on'); spin(d, qs[k].code);
+    } else {
+      rowEl.classList.remove('bad'); void rowEl.offsetWidth; rowEl.classList.add('bad');
+      tiny.textContent = isNaN(v) ? 'Введи число.' : 'Код не подходит. Перечитай факт ' + qs[k].f + '.';
+    }
+  });
+  render();
+}
+
+/* ===== 19. Блиц с таймером ===== */
+function mountP19(root) {
+  const S = [
+    ['Кровь жирафов очень густая.', true, 1], ['Жираф — непарнокопытное животное.', false, 2], ['Общий предок парнокопытных жил около 50 млн лет назад.', true, 2],
+    ['Взрослый жираф — лёгкая добыча для львов.', false, 3], ['Сердце жирафа весит 1 кг.', false, 4], ['Жираф бежит до 55 км/ч.', true, 5],
+    ['У отдельных самцов рост достигает 6 м.', true, 6], ['Самка весит 800–900 кг.', true, 7], ['Масаи делают щиты из кожи жирафа.', true, 8],
+    ['Кожа жирафа слишком тонкая для щитов.', false, 8], ['Любимое лакомство жирафов — листья акации.', true, 10], ['В привычной среде жираф живёт в среднем 60 лет.', false, 11]
+  ];
+  const LIMIT = 30000;
+  let timed = true, state = 'pre', queue = [], pos = 0, res = [], t0 = 0, iv = null, lock = false, history = [];
+  const stop = () => { clearInterval(iv); iv = null; };
+  function finish() { stop(); history.push({ timed, good: res.filter(r => r.ok).length, answered: res.length, total: queue.length }); state = 'end'; render(); }
+  const historyPanel = () => '<div class="history"><b>Попытки в этой сессии</b><ol>' + history.map(h => '<li>' + (h.timed ? 'С таймером' : 'Без таймера') + ': <strong>' + h.good + ' из ' + h.total + '</strong> верно' + (h.answered < h.total ? ' · отвечено ' + h.answered : '') + '</li>').join('') + '</ol></div>';
+  function render() {
+    let h = '';
+    if (state === 'pre') h = '<p class="lead">Блиц: ' + S.length + ' утверждений, на каждое отвечай «верно» или «неверно» по тексту.</p><label class="sw"><input type="checkbox" id="tm"' + (timed ? ' checked' : '') + '><i></i>Таймер: 30 секунд на весь раунд</label>' +
+      '<p class="hint">Попробуй оба режима. Результаты сохраняются в рамках открытой страницы — так можно сравнить точность ответов.</p>' +
+      (history.length ? historyPanel() : '') + '<div class="row"><button class="btn" data-a="go">Начать</button></div>';
+    if (state === 'run') h = (timed ? '<div class="tbar" data-s="hi"><i></i></div>' : '') + '<div class="tmeta"><span>' + (pos + 1) + ' из ' + queue.length + '</span><span id="clock">' + (timed ? '30,0 с' : 'без таймера') + '</span></div>' +
+      '<div class="stmt" id="stmt" aria-live="polite">' + queue[pos][0] + '</div><div class="duo" style="margin-top:14px"><button class="big t" data-v="1">Верно</button><button class="big f" data-v="0">Неверно</button></div><p class="keys">Клавиши: → верно, ← неверно</p>';
+    if (state === 'end') {
+      const good = res.filter(r => r.ok).length, miss = res.filter(r => !r.ok);
+      h = '<div class="sumbox"><div><span class="n">' + good + ' из ' + queue.length + '</span><small>' + (res.length < queue.length ? 'ответов дано: ' + res.length + ', время вышло' : 'все утверждения пройдены') + (timed ? '' : ', без таймера') + '</small></div></div>' +
+        (miss.length ? '<p class="qt" style="margin-top:16px">Разбор ошибок</p><ul class="qlist" style="padding:0">' + miss.map(r => '<li>' + r.s[0] + ' <b>→ ' + (r.s[1] ? 'верно' : 'неверно') + '</b>, факт ' + r.s[2] + '</li>').join('') + '</ul>' : (res.length ? '<p><span class="tag ok">Ошибок нет</span></p>' : '<p><span class="tag">Ни одного ответа: попробуй ещё раз или выключи таймер</span></p>')) +
+        historyPanel() + '<div class="row"><button class="btn" data-a="go">Сыграть ещё</button><button class="btn ghost" data-a="pre">Настройки</button></div>';
+    }
+    root.innerHTML = h;
+    if (state === 'run') { root.querySelector('.big.t').focus({ preventScroll: true }); if (timed) tick(); }
+  }
+  function tick() {
+    const left = Math.max(0, LIMIT - (Date.now() - t0)), bar = root.querySelector('.tbar');
+    if (bar) { bar.firstChild.style.width = left / LIMIT * 100 + '%'; bar.dataset.s = left > 15000 ? 'hi' : left > 7000 ? 'mid' : 'low'; }
+    const c = root.querySelector('#clock'); if (c) c.textContent = fmt((left / 1000).toFixed(1)) + ' с';
+    if (left <= 0) finish();
+  }
+  function answer(v) {
+    if (state !== 'run' || lock) return;
+    const s = queue[pos], ok = (v === 1) === s[1]; res.push({ s, ok }); lock = true;
+    root.querySelector('#stmt').classList.add(ok ? 'ok' : 'bad');
+    setTimeout(() => { lock = false; if (state !== 'run') return; if (pos + 1 >= queue.length) finish(); else { pos++; render(); } }, 380);
+  }
+  root.addEventListener('change', e => { if (e.target.id === 'tm') timed = e.target.checked; });
+  root.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.v !== undefined) return answer(+b.dataset.v);
+    if (b.dataset.a === 'go') { queue = shuffle(S); pos = 0; res = []; lock = false; state = 'run'; stop(); if (timed) t0 = Date.now(); render(); if (timed) iv = setInterval(tick, 100); }
+    else if (b.dataset.a === 'pre') { state = 'pre'; render(); }
+  });
+  root.addEventListener('keydown', e => { if (state === 'run' && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { e.preventDefault(); answer(e.key === 'ArrowRight' ? 1 : 0); } });
+  render();
+}
+
+/* ===== 20. Карточки с переворотом ===== */
+function mountP20(root) {
+  const cards = [
+    ['Оссиконы', 'Рожки на вершине головы. У самцов и самок выглядят немного по-разному.', 2],
+    ['Половой диморфизм', 'Самцы значительно крупнее самок, отличается и вид оссиконов.', 2],
+    ['Эоцен', 'Эпоха, когда жил общий предок парнокопытных: около 50 млн лет назад.', 2],
+    ['Зачем жирафу густая кровь?', 'Без неё резкое опускание или поднимание головы было бы смертельным для мозга.', 1],
+    ['На кого охотятся львы, леопарды и гиены?', 'На молодых, старых или больных. Взрослый жираф недоступен большинству хищников.', 3],
+    ['Вес сердца жирафа', '10 кг.', 4],
+    ['Максимальная скорость жирафа', 'До 55 км/ч. На коротких дистанциях он может обогнать скаковую лошадь.', 5],
+    ['Рост взрослого жирафа', 'Около 4,5 м, у отдельных самцов до 6 м. Вес может превысить полторы тонны.', 6],
+    ['Вес самки жирафа', '800–900 кг. Шея почти 2 м.', 7],
+    ['Что делают масаи из кожи жирафа?', 'Щиты: кожа настолько прочна, что защищает от людей и хищников.', 8],
+    ['Любимое лакомство жирафов', 'Листья акации.', 10],
+    ['Срок жизни жирафа', 'В привычной среде в среднем до 25 лет.', 11]
+  ];
+  let queue, flipped, firstTry, again;
+  const start = () => { queue = cards.map((c, k) => k); flipped = false; firstTry = 0; again = new Set(); };
+  start();
+  function render(from) {
+    if (!queue.length) {
+      root.innerHTML = '<div class="sumbox"><div><span class="n">' + firstTry + ' из ' + cards.length + '</span><small>карточек известно с первого раза</small></div></div>' +
+        (again.size ? '<p class="qt" style="margin-top:16px">Возвращались к этим карточкам</p><ul class="qlist" style="padding:0">' + [...again].map(k => '<li><b>' + cards[k][0] + '</b> → ' + cards[k][1] + '</li>').join('') + '</ul>' : '<p><span class="tag ok">Все карточки отмечены как знакомые с первого раза</span></p>') +
+        '<div class="row"><button class="btn ghost" data-a="again">Пройти заново</button></div>';
+      return;
+    }
+    const k = queue[0], c = cards[k], f0 = from === undefined ? flipped : from;
+    root.innerHTML = '<div class="deckbar" aria-hidden="true">' + cards.map((x, j) => '<i class="' + (!queue.includes(j) ? 'done' : again.has(j) ? 'again' : '') + (j === k ? ' cur' : '') + '"></i>').join('') + '</div>' +
+      '<div class="deck"><button class="card3d' + (f0 ? ' flipped' : '') + '" data-a="flip" aria-label="' + (flipped ? 'Ответ: ' + c[1] + '. Вернуть вопрос' : 'Вопрос: ' + c[0] + '. Показать ответ') + '"><span class="face front" aria-hidden="' + flipped + '">' + c[0] + '</span><span class="face back" aria-hidden="' + !flipped + '">' + c[1] + '<small>факт ' + c[2] + '</small></span></button></div>' +
+      (flipped ? '<div class="know"><button class="btn ghost" data-a="no">Не знаю</button><button class="btn" data-a="yes">Знаю</button></div><p class="keys" style="text-align:center;color:var(--mut);font-size:12px;margin-top:8px">Клавиши: ← не знаю, → знаю</p>' : '<p class="hint" style="text-align:center">Нажми на карточку или пробел, чтобы перевернуть. Осталось: ' + queue.length + '</p>');
+    if (f0 !== flipped) later(() => root.querySelector('.card3d').classList.toggle('flipped', flipped));
+  }
+  const grade = yes => {
+    const k = queue.shift();
+    if (yes) { if (!again.has(k)) firstTry++; } else { again.add(k); queue.push(k); }
+    flipped = false; render();
+  };
+  root.addEventListener('click', e => {
+    const a = e.target.closest('[data-a]'); if (!a) return;
+    if (a.dataset.a === 'flip') { const was = flipped; flipped = !flipped; render(was); root.querySelector('.card3d').focus({ preventScroll: true }); }
+    else if (a.dataset.a === 'yes') grade(true);
+    else if (a.dataset.a === 'no') grade(false);
+    else if (a.dataset.a === 'again') { start(); render(); }
+  });
+  root.addEventListener('keydown', e => {
+    if (!queue.length || !flipped) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); grade(true); } else if (e.key === 'ArrowLeft') { e.preventDefault(); grade(false); }
+  });
+  render();
+}
+
+/* ===== Сборка страницы ===== */
+const META = [
+  ['p1', mountP1, 'Прогноз-слайдер до/после', 'Три слайдера, правильного ответа в начале нет. После чтения те же слайдеры, а маркер «после» едет к факту.', ['H1', 'C3']],
+  ['p2', mountP2, 'Таблица прогнозов: оценка → факт', 'Студент заполняет таблицу оценок, читает текст, правит ответы и видит три колонки рядом: до, после, факт.', ['G4']],
+  ['p3', mountP3, 'Таблица-матрица «выбери колонку»', 'Строки — утверждения, колонки — категории. Одна отметка в строке, проверка подсвечивает верный столбец.', ['G3']],
+  ['p4', mountP4, 'Таблица с выпадающими ячейками', 'Карточка объекта: в каждой ячейке выбор из трёх значений. Варианты перемешиваются при каждой загрузке.', ['G2', 'D3']],
+  ['p5', mountP5, 'Сортируемая и фильтруемая таблица', 'Студент сам сортирует и фильтрует данные, чтобы ответить на вопросы. Выбери единицы: у значений появятся столбики.', ['G5']],
+  ['p6', mountP6, 'Ранжирование до/после', 'Перестановка кнопками (удобно на телефоне) с плавной анимацией. В конце три списка рядом: было, стало, по тексту.', ['C2', 'H3']],
+  ['p7', mountP7, 'Миф или факт + уровень уверенности', 'Ответ и уровень уверенности. После ответа видно, верно ли он и почему. В конце показано, как уверенность совпала с результатом, и перечислены ошибки при высокой уверенности.', ['I1']],
+  ['p8', mountP8, 'Точки на рисунке жирафа', 'Режим «Исследуй» открывает факты по точкам, режим «Проверь себя» даёт описание, а точку нужно найти. Работает с клавиатуры.', ['F1', 'F2']],
+  ['p9', mountP9, 'Пропуски: банк слов', 'Выбор слова → нажатие на пропуск. Без перетаскивания, поэтому надёжно на телефоне.', ['D2']],
+  ['p10', mountP10, 'Выдели слова в тексте', 'Маркером отмечаются слова по заданию. Проверка показывает найденное, лишнее и пропущенное.', ['E1']],
+  ['p11', mountP11, 'Ветвящийся сценарий «Ты — лев»', 'Решения героя приводят к разным концовкам, а карта в конце показывает путь среди неиспользованных ветвей.', ['J1']],
+  ['p12', mountP12, 'Гипотеза → эталон → что изменилось', 'Открытый ответ без автопроверки: студент сам сравнивает со своей прежней версией и оценивает по критериям.', ['D5', 'H4']],
+  ['p13', mountP13, '100 баллов до/после', 'Убеждённость распределяется между вариантами вместо бинарного ответа. Ползунки сами не дают превысить 100.', ['H6']],
+  ['p14', mountP14, 'Шкала согласия до/после', 'Оценка утверждений от 1 до 5. В конце видно, куда сдвинулась каждая оценка и ближе ли она к тексту.', ['H5']],
+  ['p15', mountP15, 'Медленное раскрытие графика', 'Столбцы открываются по одному. Перед каждым студент двигает ползунок и предсказывает, каким он будет, а потом видит свой прогноз рядом с фактом.', ['G9']],
+  ['p16', mountP16, 'Постепенное раскрытие картинки', 'Картинка проявляется по кускам, студент угадывает как можно раньше. В конце записывает, что уже знает о жирафах, и возвращается к записи после текста.', ['F4']],
+  ['p17', mountP17, 'Матрица 2×2: удивило или ожидал', 'Факты расставляются на поле по двум осям. Правильного расположения нет, итог показывает, какие факты оказались главными открытиями.', ['B4']],
+  ['p18', mountP18, 'Шаг-замок с кодом', 'Ответы на вопросы собираются в цифры кода. Когда все три на месте, замок открывается и пускает на следующий шаг.', ['J2']],
+  ['p19', mountP19, 'Блиц с таймером', 'Раунд «верно или неверно» на 30 секунд. Таймер можно выключить и сравнить, как меняются ответы со спешкой и без неё.', ['L1']],
+  ['p20', mountP20, 'Карточки с переворотом', 'Термин с одной стороны, ответ с другой. Карточки «не знаю» возвращаются в конец колоды, в итоге видно, что запомнилось с первого раза.', ['K1']]
+];
+const FACTS = [[1, "Кровь жирафов очень густая. Если бы не эта особенность, резкое опускание или поднимание животным головы было бы смертельным для его мозга."], [2, "Жираф – парнокопытное млекопитающее; вероятнее всего, как и другие представители отряда, произошёл от общего предка, жившего в эпоху Эоцена, около 50 миллионов лет назад. Выражен половой диморфизм: самцы значительно крупнее самок, а оссиконы (рожки) имеют несколько другой вид."], [3, "Когда жираф достигает размеров взрослой особи, он становится недоступным для большинства хищников. Львы, леопарды и гиены предпочитают охотиться на молодых, старых или больных животных."], [4, "Вес сердца жирафа составляет 10 кг."], [5, "Хотя жирафы и кажутся слегка нескладными, они хорошие бегуны: преодолевают до 55 километров в час. На коротких дистанциях жираф может обогнать скаковую лошадь."], [6, "Жираф – самое высокое животное на планете. Рост взрослой особи порядка 4,5 метров, у отдельных самцов – 6 м. Вес может перевалить за полторы тонны."], [7, "Самка несколько легче: вес от 800 до 900 кг. Основная часть длины животного приходится на передние ноги и шею; последняя может достигать почти 2 метров."], [8, "Эти животные не боятся кровотечений, порезов и ссадин. Кожа настолько прочна, что масаи делают из неё щиты, способные защитить от людей и хищников."], [9, "Разрабатывая скафандр, NASA ориентировалось на способность животного переносить давление в 400 мм ртутного столба."], [10, "Любимый деликатес жирафов – листья акации."], [11, "В привычной среде обитания жирафы в среднем доживают до 25 лет."]];
+
+$('#h1').textContent = '20 механик под учебную задачу';
+
+/* шапка: узор пятен */
+$('#skin').setAttribute('viewBox', '0 0 1000 420');
+$('#skin').innerHTML = mosaic(-40, -40, 1080, 500, 70, 5, .8).map(p => '<polygon points="' + p + '" fill="var(--hero-patch)" stroke="var(--hero-patch)" stroke-width="10" stroke-linejoin="round"/>').join('');
+
+/* факты */
+$('#factlist').innerHTML = FACTS.map(f => '<li><b>' + f[0] + '</b><span>' + f[1] + '</span></li>').join('');
+
+/* Методическая навигация. Одна механика может решать несколько задач. */
+const TASKS = [
+  ['prior', 'Актуализировать знания и предположения', 'Актуализация'],
+  ['misconceptions', 'Выявить заблуждения', 'Диагностика'],
+  ['recognize', 'Научить распознавать и различать', 'Распознавание'],
+  ['support', 'Закрепить знания с подсказками', 'Закрепление'],
+  ['data', 'Развить работу с данными', 'Работа с данными'],
+  ['apply', 'Применить знания и объяснить решение', 'Применение'],
+  ['reflect', 'Выявить представления и приоритеты', 'Рефлексия'],
+  ['engage', 'Активизировать интерес', 'Вовлечение'],
+  ['recall', 'Организовать повторение и самопроверку', 'Самопроверка']
+];
+const TASK_LINKS = {
+  p1:['prior'], p2:['prior','data'], p3:['recognize'], p4:['recognize','support'],
+  p5:['data','recognize'], p6:['prior','reflect'], p7:['misconceptions','recall'],
+  p8:['recognize','support'], p9:['support','recall'], p10:['recognize'],
+  p11:['apply'], p12:['apply','misconceptions'], p13:['reflect','prior'],
+  p14:['misconceptions','reflect'], p15:['data','prior'], p16:['engage'],
+  p17:['reflect'], p18:['engage','recall'], p19:['recall'], p20:['recall']
+};
+/* Для чего, когда, что видно, что учесть. Не оценка эффективности. */
+const GUIDE = {
+  p1:['Сопоставить исходный прогноз с данными.','Перед и после изучения.','Прогноз до и после чтения.','Сохранять первый ответ для сравнения.'],
+  p2:['Сравнить несколько предварительных оценок с фактами.','Перед чтением числового материала.','Таблица: до, после, факт.','Брать показатели с понятными единицами.'],
+  p3:['Различить категории по признакам.','После знакомства с критериями.','Распределение утверждений по колонкам.','Категории не должны пересекаться без пояснения.'],
+  p4:['Выбрать подходящие характеристики объекта.','При первичном закреплении.','Выбор и ошибки по каждой ячейке.','Варианты подсказывают ответ: это не проверка свободного воспроизведения.'],
+  p5:['Найти закономерность в таблице.','Когда студент знает значения показателей.','Способ отбора данных и итоговый ответ.','Вопрос должен требовать анализа, а не случайного клика.'],
+  p6:['Расставить объекты по выбранному критерию.','До и после изучения темы.','Как изменился порядок.','Критерий ранжирования нужно назвать явно.'],
+  p7:['Найти уверенные ошибки и пробелы.','Для диагностики и повторения.','Ответы, уверенность, объяснения ошибок.','После ошибки давать причину, а не только вердикт.'],
+  p8:['Соотнести описание с частью изображения.','При изучении схем, карт и объектов.','Выбор точки по описанию.','Точка должна быть достаточно крупной и различимой.'],
+  p9:['Восстановить понятия в контексте.','Для закрепления с опорой.','Заполненные пропуски и исправления.','Банк слов облегчает задачу; не путать с воспроизведением без подсказок.'],
+  p10:['Выделить признаки прямо в тексте.','Во время разбора нового материала.','Найденные, лишние и пропущенные слова.','Правило выделения должно быть однозначным.'],
+  p11:['Принять решение с учётом последствий.','После изучения базовых правил.','Выбранный маршрут и его итог.','Разные ветви должны иметь содержательные последствия.'],
+  p12:['Сформулировать и пересмотреть объяснение.','Перед разбором и после него.','Свой ответ и самооценка по критериям.','Самооценка не равна независимой проверке качества.'],
+  p13:['Распределить степень уверенности между версиями.','До и после обсуждения альтернатив.','Как изменилось распределение баллов.','100 баллов — выражение уверенности, а не объективная вероятность.'],
+  p14:['Зафиксировать изменение отношения к утверждениям.','До и после нового материала.','Сдвиг оценки по шкале.','Несогласие не всегда означает заблуждение.'],
+  p15:['Предсказать значения и проверить их по графику.','Перед разбором данных.','Прогноз рядом с открытым значением.','Подписать шкалу, единицы и источник данных.'],
+  p16:['Вызвать предположения по частично видимой картинке.','Для входа в тему.','Версии до и после раскрытия.','Без дальнейшего обсуждения это скорее игра на угадывание.'],
+  p17:['Разместить факты по двум субъективным осям.','После чтения, для рефлексии.','Распределение и выбранные приоритеты.','Единственно правильного ответа нет.'],
+  p18:['Объединить проверочные задания одной целью.','Для короткого закрепления.','Решённые вопросы и открытый замок.','Код — награда; усвоение определяется вопросами.'],
+  p19:['Потренировать быстрое распознавание.','После освоения материала.','Точность и темп ответов.','Таймер делать необязательным: скорость не всегда цель.'],
+  p20:['Проверить воспроизведение из памяти.','Для повторения небольших порций знаний.','Карточки «знаю» и «повторить».','Сначала попытка вспомнить, затем переворот.']
+};
+const taskName = id => TASKS.find(t => t[0] === id)[2];
+const taskTotal = id => META.filter(m => TASK_LINKS[m[0]].includes(id)).length;
+$('#task-list').innerHTML = TASKS.map((t, i) =>
+  '<button class="taskcard" type="button" data-task="' + t[0] + '" aria-pressed="false">' +
+  '<span class="taskcard-num">' + String(i + 1).padStart(2,'0') + '</span>' +
+  '<span class="taskcard-body"><strong>' + t[1] + '</strong><small>' + taskTotal(t[0]) + ' механик' + (taskTotal(t[0]) === 1 ? 'а' : taskTotal(t[0]) < 5 ? 'и' : '') + '</small></span><span class="taskcard-arrow" aria-hidden="true">↗</span></button>'
+).join('');
+const methodHTML = id => {
+  const a = GUIDE[id];
+  return '<details class="method"><summary>Методисту: когда использовать</summary><dl>' +
+    [['Задача', a[0]],['Когда',a[1]],['Что видно',a[2]],['Учесть',a[3]]].map(pair =>
+      '<div><dt>' + pair[0] + '</dt><dd>' + escapeHTML(pair[1]) + '</dd></div>').join('') +
+    '</dl></details>';
+};
+/* разделы и работающие механики */
+$('#mechs').innerHTML = META.map((m, i) => '<section class="mech" id="' + m[0] + '"><div class="mh"><span class="num">' + String(i + 1).padStart(2, '0') + '</span><div><h2>' + m[2] + '</h2><p class="desc">' + m[3] + '</p>' +
+  '<p class="tasktags">' + TASK_LINKS[m[0]].map(id => '<span>' + taskName(id) + '</span>').join('') + '</p>' +
+  '<p class="ids">В каталоге: ' + m[4].map(id => '<span>' + id + '</span>').join('') + '</p></div></div><div class="stage"></div>' +
+  methodHTML(m[0]) +
+  '<details class="code"><summary>Код этой механики</summary><button class="btn ghost sm copy" data-copy>Скопировать код</button><pre><code></code></pre></details></section>').join('');
+
+let activeTask = null;
+let viewMode = 'tasks';
+function applyTaskFilter(scrollToResults = false) {
+  const taskView = viewMode === 'tasks';
+  $('#task-list').hidden = !taskView;
+  const selected = taskView ? activeTask : null;
+  let count = 0;
+  META.forEach(m => {
+    const show = !selected || TASK_LINKS[m[0]].includes(selected);
+    document.getElementById(m[0]).hidden = !show;
+    if (show) count++;
+  });
+  document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === viewMode));
+  document.querySelectorAll('[data-task]').forEach(b => b.setAttribute('aria-pressed', b.dataset.task === selected));
+  $('#result-title').textContent = selected ? TASKS.find(t => t[0] === selected)[1] : 'Все 20 механик';
+  $('#result-note').textContent = selected ? 'Подходящих механик: ' + count + '. Один формат может решать несколько задач.' :
+    (taskView ? 'Выберите задачу выше, чтобы отобрать подходящие форматы.' : 'Полный каталог в исходном порядке.');
+  $('#clear-task').hidden = !selected;
+  if (scrollToResults) {
+    $('#results').scrollIntoView({behavior:calm?'auto':'smooth', block:'start'});
+    $('#results').focus({preventScroll:true});
+  }
+}
+$('#task-list').addEventListener('click', e => {
+  const button = e.target.closest('[data-task]'); if (!button) return;
+  activeTask = activeTask === button.dataset.task ? null : button.dataset.task;
+  applyTaskFilter(true);
+});
+document.querySelector('.view-switch').addEventListener('click', e => {
+  const button = e.target.closest('[data-view]'); if (!button) return;
+  viewMode = button.dataset.view;
+  if (viewMode === 'all') activeTask = null;
+  applyTaskFilter(false);
+});
+$('#clear-task').addEventListener('click', () => {activeTask = null; applyTaskFilter(false); document.getElementById('chooser').scrollIntoView({behavior:calm?'auto':'smooth'});});
+/* Ссылка из замка не должна вести в раздел, скрытый фильтром. */
+document.addEventListener('click', e => {
+  const link = e.target.closest('a.nextlink[href^="#p"]');
+  if (!link) return;
+  const target = document.getElementById(link.getAttribute('href').slice(1));
+  if (target && target.hidden) { activeTask = null; applyTaskFilter(false); }
+});
+applyTaskFilter();
+META.forEach(m => {
+  const sec = document.getElementById(m[0]);
+  m[1](sec.querySelector('.stage'));
+  sec.querySelector('code').textContent = m[1].toString();
+});
+document.querySelector('#mechs').insertAdjacentHTML('afterend', '<section class="mech"><details class="code"><summary>Общие помощники и узор (нужны механикам)</summary><button class="btn ghost sm copy" data-copy>Скопировать код</button><pre><code id="helpers"></code></pre><p class="hint">Стили лежат в блоке style этого файла: классы называются так же, как в коде.</p></details></section>');
+$('#helpers').textContent = [
+  'const $ = ' + $, 'const shuffle = ' + shuffle, 'const fmt = ' + fmt, 'const escapeHTML = ' + escapeHTML, 'const parseNumber = ' + parseNumber, 'const later = ' + later, 'const countUp = ' + countUp,
+  'const STEPS = ' + JSON.stringify(STEPS), 'const stepper = ' + stepper, 'const quote = ' + quote, 'const warn = ' + warn, 'const rng = ' + rng, 'const mosaic = ' + mosaic, 'const giraffeArt = ' + giraffeArt
+].join(';\n\n') + ';';
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-copy]'); if (!b) return;
+  const t = b.parentNode.querySelector('code').textContent;
+  const report = ok => { b.textContent = ok ? 'Скопировано' : 'Не удалось скопировать'; setTimeout(() => b.textContent = 'Скопировать код', 1700); };
+  const fallback = () => { const area = document.createElement('textarea'); area.value = t; area.style.position = 'fixed'; area.style.opacity = '0'; document.body.appendChild(area); area.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (_) {} area.remove(); return ok; };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(() => report(true), () => report(fallback()));
+  else report(fallback());
+});
+
+/* линейка роста */
+const track = $('#track'), head = $('#head');
+head.innerHTML = '<svg viewBox="0 0 42 42" aria-hidden="true"><path d="M9 41L13 21C14 13 21 9 28 12C35 14 38 19 34 23C31 26 25 24 21 27L23 41Z" fill="#F2B33D" stroke="#0E1B3D" stroke-width="2" stroke-linejoin="round"/><g stroke="#0E1B3D" stroke-width="2.4" stroke-linecap="round"><line x1="17" y1="12" x2="16" y2="5"/><line x1="23" y1="10.5" x2="26" y2="4"/></g><circle cx="16" cy="4.5" r="2" fill="#0E1B3D"/><circle cx="26.5" cy="3.5" r="2" fill="#0E1B3D"/><circle cx="26" cy="16.5" r="1.8" fill="#0E1B3D"/><g fill="#8B5330"><circle cx="15" cy="30" r="2.2"/><circle cx="18" cy="37" r="1.8"/></g></svg>';
+META.forEach((m, i) => {
+  const y = i / (META.length - 1) * 100;
+  track.insertAdjacentHTML('beforeend', '<a class="tick" href="#' + m[0] + '" data-i="' + i + '" style="top:' + y + '%;--x:' + y + '%" aria-label="Механика ' + (i + 1) + ': ' + m[2] + '">' + (i + 1) + '</a>');
+});
+const ticks = [...track.querySelectorAll('.tick')], secs = META.map(m => document.getElementById(m[0]));
+function ride() {
+  const y = scrollY + innerHeight * .35, tops = secs.map(s => s.getBoundingClientRect().top + scrollY);
+  let i = 0; while (i < tops.length - 1 && tops[i + 1] <= y) i++;
+  const next = tops[i + 1] === undefined ? tops[i] + 600 : tops[i + 1];
+  const f = Math.max(0, Math.min(1, (y - tops[i]) / (next - tops[i]))), p = Math.min(100, (i + (i < tops.length - 1 ? f : 0)) / (META.length - 1) * 100);
+  head.style.top = p + '%'; head.style.setProperty('--hx', p + '%');
+  const k = scrollY < tops[0] - innerHeight * .3 ? -1 : Math.round(i + f);
+  ticks.forEach((t, n) => t.classList.toggle('on', n === Math.min(k, ticks.length - 1)));
+}
+addEventListener('scroll', ride, { passive: true }); addEventListener('resize', ride); ride();
+
+/* тема */
+const themes = ['auto', 'light', 'dark'], tnames = { auto: 'авто', light: 'светлая', dark: 'тёмная' };
+let ti = 0;
+$('#theme').addEventListener('click', () => {
+  ti = (ti + 1) % 3; const t = themes[ti];
+  if (t === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t);
+  $('#theme').textContent = 'Тема: ' + tnames[t];
+});
+</script>
+
+<div id="fveil"></div><button id="ftab" type="button" aria-controls="facts" aria-expanded="false">Текст про жирафов</button>
+<script>
+(function () {
+  var f = document.getElementById('facts'), v = document.getElementById('fveil'), t = document.getElementById('ftab');
+  f.setAttribute('role', 'dialog'); f.setAttribute('aria-label', 'Текст про жирафов');
+  f.insertAdjacentHTML('afterbegin', '<button class="btn ghost sm fx" type="button">Закрыть</button>');
+  function set(on) { f.classList.toggle('open', on); v.classList.toggle('open', on); t.setAttribute('aria-expanded', on); if (on) f.querySelector('.fx').focus(); else t.focus(); }
+  t.onclick = function () { set(!f.classList.contains('open')); };
+  document.querySelectorAll('[data-facts]').forEach(function (b) { b.onclick = function () { set(true); }; });
+  f.querySelector('.fx').onclick = v.onclick = function () { set(false); };
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && f.classList.contains('open')) set(false); });
+})();
+</script>
+</body>
+</html>
